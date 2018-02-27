@@ -20,7 +20,9 @@
 
 int __attribute__((constructor)) Anium::Init() {
     std::thread aniumThread([&]() -> void {
-        std::cout << "Welcome to Anium!" << std::endl;
+        Interfaces::Find(); // This method will block and wait until it finds all the interfaces.
+
+        std::cout << "Welcome to Anium." << std::endl;
     });
     aniumThread.detach();
 

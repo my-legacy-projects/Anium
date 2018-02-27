@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <thread>
 #include <iostream>
+#include "interfaces/interfaces.hpp"
 
 namespace Anium {
 
