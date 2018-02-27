@@ -2,7 +2,7 @@
 
 pid=$(pidof csgo_linux64) # Default to CS:GO
 
-if [[ $1 -eq 0 ]]; then
+if [[ -n "$1" ]]; then
     if [ "$1" -eq "$1" ] 2>/dev/null; then
         # First argument is a int (PID)
         pid=$1
