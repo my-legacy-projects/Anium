@@ -16,16 +16,18 @@ if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE RELEASE)
 endif()
 
-set(SHARED_FLAGS "-O3 -std=c++17 -Wall -fPIC -shared")
+set(SHARED_FLAGS "-O3 -std=c++17 -Wall -fPIC")
 set(CMAKE_CXX_FLAGS_DEBUG "${SHARED_FLAGS} -g3 -ggdb")
 set(CMAKE_CXX_FLAGS_RELEASE "${SHARED_FLAGS}")
 
 add_library(Anium SHARED ${SRC})
 
+set(SHARED_LIBRARIES c stdc++)
+
 if (WIN32)
     # Windows link targets
-    target_link_libraries(Anium c stdc++)
+    target_link_libraries(Anium ${SHARED_LIBRARIES})
 else()
     # *nix link targets
-    target_link_libraries(Anium c stdc++ SDL2 GL dl)
+    target_link_libraries(Anium ${SHARED_LIBRARIES} SDL2 GL dl)
 endif()

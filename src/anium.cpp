@@ -19,8 +19,8 @@
 #endif
 
 int __attribute__((constructor)) Anium::Init() {
-    std::thread aniumThread([&] -> {
-
+    std::thread aniumThread([&]() -> void {
+        std::cout << "Welcome to Anium!" << std::endl;
     });
     aniumThread.detach();
 

@@ -3,6 +3,7 @@
 
 #include <cstdlib>
 #include <thread>
+#include <iostream>
 
 namespace Anium {
 
