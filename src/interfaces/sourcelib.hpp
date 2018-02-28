@@ -4,7 +4,7 @@
 #include <dlfcn.h> // dlfcn is also available for Windows, just needs to be installed
 #include <cstring>
 #include <cstdlib>
-#include <thread>
+#include "../common.hpp"
 
 typedef void* (*InstantiateInterfaceFn)();
 
@@ -48,9 +48,8 @@ public:
 
         dlclose(lib);
 
-        if (reg == nullptr) {
+        if (reg == nullptr)
             return false;
-        }
 
         this->reg = *reinterpret_cast<InterfaceReg**>(reg);
 

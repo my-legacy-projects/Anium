@@ -3,11 +3,10 @@
 
 #include <cstdlib>
 #include <thread>
-#include <iostream>
-#include "interfaces/interfaces.hpp"
+#include "common.hpp"
 
 #if defined(__unix__) || defined(__APPLE__)
-    #define ANIUM_UNIX
+    #define ANIUM_UNIX true
 
     // Define Windows-only calling convention to default to nothing on *nix
     #define __fastcall
@@ -15,12 +14,12 @@
     #define __cdecl
 
     #if defined(__APPLE__)
-        #define ANIUM_MAC
+        #define ANIUM_MAC true
     #else
-        #define ANIUM_LINUX
+        #define ANIUM_LINUX true
     #endif
 #else
-    #define ANIUM_WINDOWS
+    #define ANIUM_WINDOWS true
     #include <Windows.h>
 #endif
 
