@@ -3,7 +3,7 @@
 Cross-platform (as in I want to die) training software for Counter-Strike: Global Offensive
 
 This project uses a few parts from AimTux, Fuzion, Cathook, blue and Nekohook.
-Shoutout to LWSS, nullifiedcat, F1ssi0n and Onee chan.
+Shoutout to aixxe, LWSS, nullifiedcat, F1ssi0n and Onee chan.
 
 ### Setup
 
@@ -34,4 +34,4 @@ injecting it with your favorite shared library injector.
 Windows | Mac OS | Linux
 ------- | ------ | ---------
 AppVeyor | Travis CI | Circle CI
-Soon™ | ![TravisCI](https://img.shields.io/travis/Marc3842h/Anium.svg) | ![CircleCI](https://img.shields.io/circleci/token/7d783390d7d066504d7ed0be0432dbed58e34324/project/github/Marc3842h/Anium/master.svg)
+Soon™ | Soon™ | ![CircleCI](https://img.shields.io/circleci/token/7d783390d7d066504d7ed0be0432dbed58e34324/project/github/Marc3842h/Anium/master.svg)
