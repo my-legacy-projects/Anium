@@ -1,23 +1,5 @@
 #include "anium.hpp"
 
-#if defined(__unix__) || defined(__APPLE__)
-    #define ANIUM_UNIX
-
-    // Define Windows-only calling convention to default to nothing on *nix
-    #define __fastcall
-    #define __stdcall
-    #define __cdecl
-
-    #if defined(__APPLE__)
-        #define ANIUM_MAC
-    #else
-        #define ANIUM_LINUX
-    #endif
-#else
-    #define ANIUM_WINDOWS
-    #include <Windows.h>
-#endif
-
 int __attribute__((constructor)) Anium::Init() {
     std::thread aniumThread([&]() -> void {
         Interfaces::Find(); // This method will block and wait until it finds all the interfaces.
@@ -34,7 +16,7 @@ int __attribute__((destructor)) Anium::Destroy() {
     return EXIT_SUCCESS;
 }
 
-#ifdef ANIUM_WINDOWS
+#if defined(ANIUM_WINDOWS)
 
 __declspec(dllexport) BOOL APIENTRY DllMain(HMODULE module, DWORD reason, LPVOID reserved) {
     switch (reason) {
