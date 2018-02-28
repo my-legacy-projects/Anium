@@ -8,7 +8,6 @@ notifications:
   email: false
 
 install:
-  - cmake -G Xcode .
   - cmake .
 
 script:
