@@ -1,6 +1,6 @@
 #include "anium.hpp"
 
-#if defined(__unix__)
+#if defined(__unix__) || defined(__APPLE__)
     #define ANIUM_UNIX
 
     // Define Windows-only calling convention to default to nothing on *nix
