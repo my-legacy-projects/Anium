@@ -17,12 +17,14 @@ Requirements:
 To generate the project files:
 
 * **Windows**: `cmake -G "Visual Studio 15" .`
-* ***nix** `cmake .`
+* **Mac OS**: `cmake -G Xcode .`
+* **Linux** `cmake .`
 
 To build:
 
 * **Windows**: Do it from within Visual Studio
-* ***nix**: `make -j$(nproc)`
+* **Mac OS**: Do it from within Xcode
+* **Linux**: `make -j$(nproc)`
 
 Injection can be done by either `LD_PRELOAD`ing Anium or
 injecting it with your favorite shared library injector.

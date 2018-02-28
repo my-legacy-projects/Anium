@@ -20,6 +20,12 @@ set(SHARED_FLAGS "-O3 -std=c++17 -Wall -fPIC")
 set(CMAKE_CXX_FLAGS_DEBUG "${SHARED_FLAGS} -g3 -ggdb")
 set(CMAKE_CXX_FLAGS_RELEASE "${SHARED_FLAGS}")
 
+if (APPLE)
+    # Force Mac people to use GCC
+    set_target_properties(Anium PROPERTIES XCODE_ATTRIBUTE_CC "/usr/bin/gcc")
+    set_target_properties(Anium PROPERTIES XCODE_ATTRIBUTE_CXX "/usr/bin/g++")
+endif()
+
 add_library(Anium SHARED ${SRC})
 
 set(SHARED_LIBRARIES c stdc++)
