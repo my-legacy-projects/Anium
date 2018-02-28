@@ -6,6 +6,8 @@
 #include <cstdlib>
 #include "../common.hpp"
 
+#include <link.h> // TODO: Make this Windows compatible
+
 typedef void* (*InstantiateInterfaceFn)();
 
 struct InterfaceReg {
@@ -20,6 +22,9 @@ class SourceLib {
 private:
     std::string name;
     InterfaceReg* reg = nullptr;
+
+    uintptr_t address = 0;
+    size_t size = 0;
 
 public:
     SourceLib(std::string _windows, std::string _mac, std::string _linux) {
@@ -53,7 +58,25 @@ public:
 
         this->reg = *reinterpret_cast<InterfaceReg**>(reg);
 
-        return true;
+        std::tuple<std::string, uintptr_t, size_t> args = {};
+
+        // Credit: https://github.com/aixxe/cstrike-basehook-linux/blob/master/src/Utilities/Linker.cpp#L20
+        // TODO: Find a way to make this more performing (we're looping through every library with every SourceLib)
+        dl_iterate_phdr([](struct dl_phdr_info* info, size_t, void* self) {
+            std::string module = ((SourceLib*) self)->name.substr(((SourceLib*) self)->name.find_last_of("/") + 1);
+
+            if (strcmp(info->dlpi_name, module.c_str())) {
+                ((SourceLib*) self)->address = info->dlpi_addr + info->dlpi_phdr[0].p_vaddr;
+                ((SourceLib*) self)->size = info->dlpi_phdr[0].p_memsz;
+            }
+
+            return 0;
+        }, (void*) this);
+
+        // [DEBUG]
+        std::cout << GetLibraryName() << " - Address: " << this->address << " / Size: " << this->size << std::endl;
+
+        return this->address != 0 && this->size != 0;
     }
 
     template <typename T>
@@ -76,6 +99,14 @@ public:
         }
 
         return nullptr;
+    }
+
+    uintptr_t GetAddress() {
+        return this->address;
+    }
+
+    size_t GetSize() {
+        return this->size;
     }
 
 };

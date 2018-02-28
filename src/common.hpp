@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <thread>
+#include <string>
+#include <sstream>
 #include "anium.hpp"
 #include "sdk/sdk.hpp"
 #include "interfaces/interfaces.hpp"

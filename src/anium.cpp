@@ -4,6 +4,13 @@ int __attribute__((constructor)) Anium::Init() {
     std::thread aniumThread([&]() -> void {
         Interfaces::Find(); // This method will block and wait until it finds all the interfaces.
 
+        Hooker::Init(); // Sig scanning
+
+        Hooker::Hook(); // VMT Hooking
+
+        // Seed random number generator with current time
+        srand((unsigned int) time(nullptr));
+
         std::cout << "Welcome to Anium." << std::endl;
     });
     aniumThread.detach();
@@ -12,6 +19,9 @@ int __attribute__((constructor)) Anium::Init() {
 }
 
 int __attribute__((destructor)) Anium::Destroy() {
+    Hooker::Restore();
+
+    std::cout << "Thank you and have a nice day." << std::endl;
 
     return EXIT_SUCCESS;
 }

@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <thread>
 #include "common.hpp"
+#include "hooks/hooker.hpp"
 
 #if defined(__unix__) || defined(__APPLE__)
     #define ANIUM_UNIX true
