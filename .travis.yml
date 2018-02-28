@@ -1,0 +1,14 @@
+language: cpp
+os: osx
+osx_image: xcode9.2
+compiler: clang
+xcode_project: Anium.xcodeproj
+
+notifications:
+  email: false
+
+install:
+  - cmake -G Xcode .
+
+script:
+  - make
