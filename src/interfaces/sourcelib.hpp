@@ -18,29 +18,24 @@ struct InterfaceReg {
 
 class SourceLib {
 private:
-    std::string windowsName;
-    std::string macName;
-    std::string linuxName;
+    std::string name;
     InterfaceReg* reg = nullptr;
 
 public:
-    SourceLib(std::string windows, std::string mac, std::string _linux) {
-        this->windowsName = std::move(windows);
-        this->macName = std::move(mac);
-        this->linuxName = std::move(_linux);
+    SourceLib(std::string _windows, std::string _mac, std::string _linux) {
+        #if defined(ANIUM_WINDOWS)
+            this->name = std::move(_windows);
+        #elif defined(ANIUM_MAC)
+            this->name = std::move(_mac);
+        #elif defined(ANIUM_LINUX)
+            this->name = std::move(_linux);
+        #endif
+
         Init(); // Try to load the reg now - deal with it later if it doesn't work yet
     }
 
     std::string GetLibraryName() {
-        #if defined(ANIUM_WINDOWS)
-            return this->windowsName;
-        #elif defined(ANIUM_MAC)
-            return this->macName;
-        #elif defined(ANIUM_LINUX)
-            return this->linuxName;
-        #endif
-
-        return "";
+        return name;
     }
 
     bool Init() {
@@ -62,14 +57,14 @@ public:
         return true;
     }
 
-    template <typename Interface>
-    Interface* GrabInterface(const std::string& target) {
+    template <typename T>
+    T* GrabInterface(const std::string& target) {
         if (this->reg == nullptr) {
             // The reg is null - let's try to get it
             if (!Init())
                 std::this_thread::sleep_for(std::chrono::seconds(2));
 
-            return this->GrabInterface<Interface>(target);
+            return this->GrabInterface<T>(target);
         }
 
         InterfaceReg* current;
@@ -77,7 +72,7 @@ public:
         for (current = this->reg; current; current = current->m_pNext) {
             if (strcmp(current->m_pName, target.c_str()) == 0 &&
                 strlen(current->m_pName) - 3 == strlen(target.c_str())) {
-                return reinterpret_cast<Interface*>(current->m_CreateFn);
+                return reinterpret_cast<T*>(current->m_CreateFn);
             }
         }
 
