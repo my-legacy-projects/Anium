@@ -29,5 +29,5 @@ if (WIN32)
     target_link_libraries(Anium ${SHARED_LIBRARIES})
 else()
     # *nix link targets
-    target_link_libraries(Anium ${SHARED_LIBRARIES} SDL2 GL dl)
+    target_link_libraries(Anium ${SHARED_LIBRARIES} dl)
 endif()
