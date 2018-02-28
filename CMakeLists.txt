@@ -3,8 +3,8 @@ project(Anium)
 
 # Prefered compilers on each platform:
 # * Windows: Microsoft Visual C++ Compiler
-# * Mac OS: GCC
-# * Linux: Clang
+# * Mac OS: Clang
+# * Linux: GCC
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ./bin)
@@ -19,12 +19,6 @@ endif()
 set(SHARED_FLAGS "-O3 -std=c++17 -Wall -fPIC")
 set(CMAKE_CXX_FLAGS_DEBUG "${SHARED_FLAGS} -g3 -ggdb")
 set(CMAKE_CXX_FLAGS_RELEASE "${SHARED_FLAGS}")
-
-if (APPLE)
-    # Force Mac people to use GCC
-    set_target_properties(Anium PROPERTIES XCODE_ATTRIBUTE_CC "/usr/bin/gcc")
-    set_target_properties(Anium PROPERTIES XCODE_ATTRIBUTE_CXX "/usr/bin/g++")
-endif()
 
 add_library(Anium SHARED ${SRC})
 
