@@ -6,7 +6,14 @@
 #include <cstdlib>
 #include "../common.hpp"
 
-#include <link.h> // TODO: Make this Windows compatible
+#if defined(ANIUM_WINDOWS)
+    #include <Windows.h>
+    #include <Psapi.h>
+#elif defined(ANIUM_MAC)
+    // TODO: Getting dlInfo for Mac
+#elif defined(ANIUM_LINUX)
+    #include <link.h>
+#endif
 
 typedef void* (*InstantiateInterfaceFn)();
 
@@ -58,20 +65,33 @@ public:
 
         this->reg = *reinterpret_cast<InterfaceReg**>(reg);
 
-        std::tuple<std::string, uintptr_t, size_t> args = {};
+        // Parse the full path of the library into the last one, e.g "client.dll", "client.dylib", "client_client.so"
+        std::string module = this->name.substr(this->name.find_last_of("/") + 1);
 
-        // Credit: https://github.com/aixxe/cstrike-basehook-linux/blob/master/src/Utilities/Linker.cpp#L20
-        // TODO: Find a way to make this more performing (we're looping through every library with every SourceLib)
-        dl_iterate_phdr([](struct dl_phdr_info* info, size_t, void* self) {
-            std::string module = ((SourceLib*) self)->name.substr(((SourceLib*) self)->name.find_last_of("/") + 1);
+        #if defined(ANIUM_WINDOWS)
+            // Credit: https://github.com/emskye96/chameleon-ng/blob/master/src/FindPattern.hpp#L44
+            MODULEINFO info = { 0 };
 
-            if (strcmp(info->dlpi_name, module.c_str())) {
-                ((SourceLib*) self)->address = info->dlpi_addr + info->dlpi_phdr[0].p_vaddr;
-                ((SourceLib*) self)->size = info->dlpi_phdr[0].p_memsz;
-            }
+            GetModuleInformation(GetCurrentProcess(), GetModuleHandleA(module.c_str()), &info, sizeof(MODULEINFO))
 
-            return 0;
-        }, (void*) this);
+            this->address = (uintptr_t) module_info.lpBaseOfDll;
+            this->size = (size_t) module_info.SizeOfImage;
+        #elif defined(ANIUM_MAC)
+            // Mac has a weird way of finding the module info
+            // Mac doesn't provide a nice interface like Windows or Linux but you gotta read the memory yourself
+            // and find the module, so I kinda want to die.
+            // Reference (sadly incomplete): https://github.com/sonicrules11/Barbossa/blob/master/Utils/patternscan.cpp#L17
+        #elif defined(__linux__)
+            // Credit: https://github.com/aixxe/cstrike-basehook-linux/blob/master/src/Utilities/Linker.cpp#L20
+            dl_iterate_phdr([](struct dl_phdr_info* info, size_t, void* self) {
+                if (strcmp(info->dlpi_name, (module.c_str()))) {
+                    ((SourceLib*) self)->address = info->dlpi_addr + info->dlpi_phdr[0].p_vaddr;
+                    ((SourceLib*) self)->size = info->dlpi_phdr[0].p_memsz;
+                }
+
+                return 0;
+            }, (void*) this);
+        #endif
 
         // [DEBUG]
         std::cout << GetLibraryName() << " - Address: " << this->address << " / Size: " << this->size << std::endl;
