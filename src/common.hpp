@@ -2,12 +2,15 @@
 #define ANIUM_COMMON_HPP
 
 #include <iostream>
-#include <thread>
 #include <string>
 #include <sstream>
 #include "anium.hpp"
 #include "sdk/sdk.hpp"
 #include "interfaces/interfaces.hpp"
+
+#if defined(_WIN32)
+    #include <Windows.h>
+#endif
 
 namespace g {
 

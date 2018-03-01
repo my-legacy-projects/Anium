@@ -3,8 +3,7 @@ project(Anium)
 
 # Prefered compilers on each platform:
 # * Windows: Microsoft Visual C++ Compiler
-# * Mac OS: Clang
-# * Linux: GCC
+# * *nix: Clang
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ./bin)
@@ -20,14 +19,16 @@ set(SHARED_FLAGS "-O3 -std=c++17 -Wall -fPIC")
 set(CMAKE_CXX_FLAGS_DEBUG "${SHARED_FLAGS} -g3 -ggdb")
 set(CMAKE_CXX_FLAGS_RELEASE "${SHARED_FLAGS}")
 
+if (WIN32)
+    set(CMAKE_DL_LIBS dlfcn-win32::dl psapi)
+elseif (APPLE)
+    set(CMAKE_DL_LIBS dl pthread)
+elseif (UNIX) # Linux
+    set(CMAKE_DL_LIBS dl pthread)
+endif()
+
+set(CMAKE_DL_LIBS ${CMAKE_DL_LIBS} c stdc++)
+
 add_library(Anium SHARED ${SRC})
 
-set(SHARED_LIBRARIES c stdc++)
-
-if (WIN32)
-    # Windows link targets
-    target_link_libraries(Anium ${SHARED_LIBRARIES})
-else()
-    # *nix link targets
-    target_link_libraries(Anium ${SHARED_LIBRARIES} dl)
-endif()
+target_link_libraries(Anium ${CMAKE_DL_LIBS})

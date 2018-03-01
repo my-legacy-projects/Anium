@@ -2,16 +2,19 @@
 #define ANIUM_SOURCELIB_HPP
 
 #include <dlfcn.h> // dlfcn is also available for Windows, just needs to be installed
+#include <string>
 #include <cstring>
 #include <cstdlib>
-#include "../common.hpp"
+#include <iostream>
+#include <thread>
+#include <chrono>
 
-#if defined(ANIUM_WINDOWS)
+#if defined(_WIN32)
     #include <Windows.h>
     #include <Psapi.h>
-#elif defined(ANIUM_MAC)
+#elif defined(__APPLE__)
     // TODO: Getting dlInfo for Mac
-#elif defined(ANIUM_LINUX)
+#elif defined(__linux__)
     #include <link.h>
 #endif
 
@@ -28,6 +31,7 @@ struct InterfaceReg {
 class SourceLib {
 private:
     std::string name;
+    std::string module;
     InterfaceReg* reg = nullptr;
 
     uintptr_t address = 0;
@@ -35,19 +39,25 @@ private:
 
 public:
     SourceLib(std::string _windows, std::string _mac, std::string _linux) {
-        #if defined(ANIUM_WINDOWS)
+        #if defined(_WIN32)
             this->name = std::move(_windows);
-        #elif defined(ANIUM_MAC)
+        #elif defined(__APPLE__)
             this->name = std::move(_mac);
-        #elif defined(ANIUM_LINUX)
+        #elif defined(__linux__)
             this->name = std::move(_linux);
         #endif
+
+        if (this->name.empty())
+            return;
+
+        // Parse the full path of the library into the last one, e.g "client.dll", "client.dylib", "client_client.so"
+        this->module = this->name.substr(this->name.find_last_of('/') + 1);
 
         Init(); // Try to load the reg now - deal with it later if it doesn't work yet
     }
 
     std::string GetLibraryName() {
-        return name;
+        return this->name;
     }
 
     bool Init() {
@@ -65,18 +75,15 @@ public:
 
         this->reg = *reinterpret_cast<InterfaceReg**>(reg);
 
-        // Parse the full path of the library into the last one, e.g "client.dll", "client.dylib", "client_client.so"
-        std::string module = this->name.substr(this->name.find_last_of("/") + 1);
-
-        #if defined(ANIUM_WINDOWS)
+        #if defined(_WIN32)
             // Credit: https://github.com/emskye96/chameleon-ng/blob/master/src/FindPattern.hpp#L44
             MODULEINFO info = { 0 };
 
-            GetModuleInformation(GetCurrentProcess(), GetModuleHandleA(module.c_str()), &info, sizeof(MODULEINFO))
+            GetModuleInformation(GetCurrentProcess(), GetModuleHandleA(this->module.c_str()), &info, sizeof(MODULEINFO));
 
             this->address = (uintptr_t) module_info.lpBaseOfDll;
             this->size = (size_t) module_info.SizeOfImage;
-        #elif defined(ANIUM_MAC)
+        #elif defined(__APPLE__)
             // Mac has a weird way of finding the module info
             // Mac doesn't provide a nice interface like Windows or Linux but you gotta read the memory yourself
             // and find the module, so I kinda want to die.
@@ -84,7 +91,9 @@ public:
         #elif defined(__linux__)
             // Credit: https://github.com/aixxe/cstrike-basehook-linux/blob/master/src/Utilities/Linker.cpp#L20
             dl_iterate_phdr([](struct dl_phdr_info* info, size_t, void* self) {
-                if (strcmp(info->dlpi_name, (module.c_str()))) {
+                std::string name = std::string(info->dlpi_name);
+
+                if (name.find(((SourceLib*) self)->module) != std::string::npos) {
                     ((SourceLib*) self)->address = info->dlpi_addr + info->dlpi_phdr[0].p_vaddr;
                     ((SourceLib*) self)->size = info->dlpi_phdr[0].p_memsz;
                 }
@@ -92,9 +101,6 @@ public:
                 return 0;
             }, (void*) this);
         #endif
-
-        // [DEBUG]
-        std::cout << GetLibraryName() << " - Address: " << this->address << " / Size: " << this->size << std::endl;
 
         return this->address != 0 && this->size != 0;
     }

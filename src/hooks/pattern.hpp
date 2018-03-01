@@ -9,7 +9,7 @@
 
 class Pattern {
 private:
-    SourceLib module = nullptr;
+    SourceLib module;
     std::string signature;
 
     // Credit: https://github.com/learn-more/findpattern-bench/blob/master/patterns/learn_more.h
@@ -43,14 +43,14 @@ private:
     }
 
 public:
-    Pattern(const SourceLib& module, std::string _windows, std::string _mac, std::string _linux) {
+    Pattern(SourceLib module, std::string _windows, std::string _mac, std::string _linux) : module(module) {
         this->module = module;
 
-        #if defined(ANIUM_WINDOWS)
+        #if defined(_WIN32)
             this->signature = std::move(_windows);
-        #elif defined(ANIUM_MAC)
+        #elif defined(__APPLE__)
             this->signature = std::move(_mac);
-        #elif defined(ANIUM_LINUX)
+        #elif defined(__linux__)
             this->signature = std::move(_linux);
         #endif
     }
