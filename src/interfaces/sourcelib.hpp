@@ -124,13 +124,22 @@ public:
     }
 
     template <typename T>
-    T* GrabInterface(const std::string& target) {
+    T* GrabInterface(std::string _windows, std::string _mac, std::string _linux) {
+        #if defined(_WIN32)
+            std::string target = std::move(_windows);
+        #elif defined(__APPLE__)
+            std::string target = std::move(_mac);
+        #elif defined(__linux__)
+            std::string target = std::move(_linux);
+        #endif
+
         if (this->reg == nullptr) {
             // The reg is null - let's try to get it
             if (!Init())
                 std::this_thread::sleep_for(std::chrono::seconds(2));
 
-            return this->GrabInterface<T>(target);
+            // If it looks stupid but it isn't stupid, it ain't stupid
+            return this->GrabInterface<T>(target, target, target);
         }
 
         InterfaceReg* current;
