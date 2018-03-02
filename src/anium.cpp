@@ -23,6 +23,16 @@ int __attribute__((destructor)) Anium::Destroy() {
 
     std::cout << "Thank you and have a nice day." << std::endl;
 
+    #if defined(__APPLE__) || defined(__linux__)
+        void* self = dlopen(nullptr, RTLD_NOW | RTLD_NOLOAD);
+
+        if (self == nullptr)
+            return EXIT_SUCCESS;
+
+        dlclose(self);
+        dlclose(self);
+    #endif
+
     return EXIT_SUCCESS;
 }
 
