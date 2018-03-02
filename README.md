@@ -34,4 +34,4 @@ injecting it with your favorite shared library injector.
 Windows | Mac OS | Linux
 ------- | ------ | ---------
 AppVeyor | Travis CI | Circle CI
-Soon™ | ![TravisCI](https://img.shields.io/travis/Marc3842h/Anium.svg) | ![CircleCI](https://img.shields.io/circleci/token/7d783390d7d066504d7ed0be0432dbed58e34324/project/github/Marc3842h/Anium/master.svg)
+Soon™ | ![TravisCI](https://travis-ci.com/Marc3842h/Anium.svg?token=N3JdkxuzfFsy9B38kufx&branch=master) | ![CircleCI](https://img.shields.io/circleci/token/7d783390d7d066504d7ed0be0432dbed58e34324/project/github/Marc3842h/Anium/master.svg)
