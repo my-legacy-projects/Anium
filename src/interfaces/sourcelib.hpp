@@ -13,7 +13,13 @@
     #include <Windows.h>
     #include <Psapi.h>
 #elif defined(__APPLE__)
-    // TODO: Getting dlInfo for Mac
+    #include <sys/types.h>
+    #include <mach/error.h>
+    #include <mach/vm_types.h>
+    #include <mach-o/dyld.h>
+    #include <mach-o/getsect.h>
+    #include <mach/mach.h>
+    #include <sys/stat.h>
 #elif defined(__linux__)
     #include <link.h>
 #endif
@@ -84,10 +90,22 @@ public:
             this->address = (uintptr_t) module_info.lpBaseOfDll;
             this->size = (size_t) module_info.SizeOfImage;
         #elif defined(__APPLE__)
-            // Mac has a weird way of finding the module info
-            // Mac doesn't provide a nice interface like Windows or Linux but you gotta read the memory yourself
-            // and find the module, so I kinda want to die.
-            // Reference (sadly incomplete): https://github.com/sonicrules11/Barbossa/blob/master/Utils/patternscan.cpp#L17
+            // Credit: https://github.com/scen/libembryo/blob/master/src/mem/module.cpp#L15
+            for (int i = 0; i < _dyld_image_count(); i++) {
+                mach_header* header = (mach_header*) _dyld_get_image_header(i);
+
+                std::string name(_dyld_get_image_name(i));
+                if (name.empty())
+                    continue;
+
+                if (name.find(this->module) != std::string::npos) {
+                    struct stat sb;
+                    stat(name.c_str(), &sb);
+
+                    this->address = (uintptr_t) header;
+                    this->size = (size_t) sb.st_size;
+                }
+            }
         #elif defined(__linux__)
             // Credit: https://github.com/aixxe/cstrike-basehook-linux/blob/master/src/Utilities/Linker.cpp#L20
             dl_iterate_phdr([](struct dl_phdr_info* info, size_t, void* self) {
