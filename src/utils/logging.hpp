@@ -9,10 +9,7 @@
 #include <sstream>
 #include <cstdarg>
 
-#if __has_include(<filesystem>)
-    #include <filesystem>
-    namespace fs = std::filesystem;
-#elif !defined(__APPLE__)
+#if !defined(__APPLE__)
     #include <experimental/filesystem>
     namespace fs = std::experimental::filesystem;
 #endif
