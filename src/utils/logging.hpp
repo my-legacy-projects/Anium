@@ -33,8 +33,10 @@ public:
         #if defined(__APPLE__)
             this->stream.open("/tmp/" + this->name + ".log");
         #else
+            char separator = fs::path::preferred_separator;
+
             std::stringstream logFilePath("");
-            logFilePath << fs::temp_directory_path().u8string() << fs::path::preferred_separator << this->name << ".log";
+            logFilePath << fs::temp_directory_path().u8string() << separator << this->name << ".log";
 
             this->stream.open(logFilePath.str());
         #endif
