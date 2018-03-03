@@ -12,7 +12,7 @@
 #if __has_include(<filesystem>)
     #include <filesystem>
     namespace fs = std::filesystem;
-#else
+#elif !defined(__APPLE__)
     #include <experimental/filesystem>
     namespace fs = std::experimental::filesystem;
 #endif
@@ -28,8 +28,14 @@ public:
         this->name = std::move(name);
         this->withTime = time;
 
-        fs::path tmp = fs::temp_directory_path();
-        this->stream.open(tmp.u8string() + fs::path::preferred_separator + this->name + ".log");
+        // Apple Clang doesn't have support for <filesystem> nor <experimental/filesystem>
+        // So we'll just hard code the path to the temp. directory
+        #if defined(__APPLE__)
+            this->stream.open("/tmp/" + this->name + ".log");
+        #else
+            fs::path tmp = fs::temp_directory_path();
+            this->stream.open(tmp.u8string() + fs::path::preferred_separator + this->name + ".log");
+        #endif
     }
 
     ~Logger() {
