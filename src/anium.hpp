@@ -6,7 +6,9 @@
 #include "common.hpp"
 #include "hooks/hooker.hpp"
 
-#if defined(__linux__) || defined(__APPLE__)
+#if defined(_WIN32)
+    #include <Windows.h>
+#elif defined(__linux__) || defined(__APPLE__)
     // Define Windows-only calling convention to default to nothing on *nix
     #define __fastcall
     #define __stdcall

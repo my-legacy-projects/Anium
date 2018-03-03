@@ -20,14 +20,15 @@ set(CMAKE_CXX_FLAGS_DEBUG "${SHARED_FLAGS} -g3 -ggdb")
 set(CMAKE_CXX_FLAGS_RELEASE "${SHARED_FLAGS}")
 
 if (WIN32)
-    set(CMAKE_DL_LIBS dlfcn-win32::dl psapi)
+    set(CMAKE_DL_LIBS)
 elseif (APPLE)
-    set(CMAKE_DL_LIBS dl pthread)
+    set(CMAKE_DL_LIBS dl pthread c stdc++)
 elseif (UNIX) # Linux
-    set(CMAKE_DL_LIBS dl pthread stdc++fs)
+    set(CMAKE_DL_LIBS dl pthread c stdc++ stdc++fs)
 endif()
 
-set(CMAKE_DL_LIBS ${CMAKE_DL_LIBS} c stdc++)
+# Common build targets across all platforms
+set(CMAKE_DL_LIBS ${CMAKE_DL_LIBS})
 
 add_library(Anium SHARED ${SRC})
 

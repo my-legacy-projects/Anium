@@ -139,7 +139,7 @@ public:
         #endif
 
         #if defined(_WIN32)
-            if (!GetProcAddress(this->module.c_str(), "CreateInterface")) {
+            if (GetProcAddress(GetModuleHandleA(this->module.c_str()), "CreateInterface") == 0) {
                 // The module isn't available yet, wait 2 seconds and then try again
                 std::this_thread::sleep_for(std::chrono::seconds(2));
 
@@ -149,10 +149,10 @@ public:
 
             typedef void* (*CreateInterfaceFn) (const char*, int*);
             CreateInterfaceFn func = (CreateInterfaceFn) GetProcAddress(
-                GetModuleHandleA(this->module.c_str(), "CreateInterface")
+                GetModuleHandleA(this->module.c_str()), "CreateInterface"
             );
 
-            return reinterpret_cast<T*>(CreateInterface(this->target.c_str(), nullptr));
+            return reinterpret_cast<T*>(func(target.c_str(), nullptr));
         #elif defined(__APPLE__) || defined(__linux__)
             if (this->reg == nullptr) {
                 // The reg is null - let's try to get it
