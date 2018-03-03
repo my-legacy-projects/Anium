@@ -87,8 +87,8 @@ public:
 
             GetModuleInformation(GetCurrentProcess(), GetModuleHandleA(this->module.c_str()), &info, sizeof(MODULEINFO));
 
-            this->address = (uintptr_t) module_info.lpBaseOfDll;
-            this->size = (size_t) module_info.SizeOfImage;
+            this->address = (uintptr_t) info.lpBaseOfDll;
+            this->size = (size_t) info.SizeOfImage;
         #elif defined(__APPLE__)
             // Credit: https://github.com/scen/libembryo/blob/master/src/mem/module.cpp#L15
             for (int i = 0; i < _dyld_image_count(); i++) {
