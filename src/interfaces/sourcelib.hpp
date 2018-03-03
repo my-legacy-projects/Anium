@@ -1,7 +1,6 @@
 #ifndef ANIUM_SOURCELIB_HPP
 #define ANIUM_SOURCELIB_HPP
 
-#include <dlfcn.h> // dlfcn is also available for Windows, just needs to be installed
 #include <string>
 #include <cstring>
 #include <cstdlib>
@@ -22,6 +21,10 @@
     #include <sys/stat.h>
 #elif defined(__linux__)
     #include <link.h>
+#endif
+
+#if defined(__APPLE__) || defined(__linux__)
+    #include <dlfcn.h>
 #endif
 
 typedef void* (*InstantiateInterfaceFn)();
@@ -67,19 +70,21 @@ public:
     }
 
     bool Init() {
-        void* lib = dlopen(GetLibraryName().c_str(), RTLD_NOLOAD | RTLD_NOW | RTLD_LOCAL);
+        #if defined(__APPLE__) || defined(__linux__)
+            void* lib = dlopen(GetLibraryName().c_str(), RTLD_NOLOAD | RTLD_NOW | RTLD_LOCAL);
 
-        if (lib == nullptr)
-            return false;
+            if (lib == nullptr)
+                return false;
 
-        void* reg = dlsym(lib, "s_pInterfaceRegs");
+            void* reg = dlsym(lib, "s_pInterfaceRegs");
 
-        dlclose(lib);
+            dlclose(lib);
 
-        if (reg == nullptr)
-            return false;
+            if (reg == nullptr)
+                return false;
 
-        this->reg = *reinterpret_cast<InterfaceReg**>(reg);
+            this->reg = *reinterpret_cast<InterfaceReg**>(reg);
+        #endif
 
         #if defined(_WIN32)
             // Credit: https://github.com/emskye96/chameleon-ng/blob/master/src/FindPattern.hpp#L44
@@ -142,14 +147,23 @@ public:
             return this->GrabInterface<T>(target, target, target);
         }
 
-        InterfaceReg* current;
+        #if defined(_WIN32)
+            typedef void* (*CreateInterfaceFn) (const char*, int*);
+            CreateInterfaceFn func = (CreateInterfaceFn) GetProcAddress(
+                    GetModuleHandleA(this->module.c_str(), "CreateInterface")
+            );
 
-        for (current = this->reg; current; current = current->m_pNext) {
-            if (strcmp(current->m_pName, target.c_str()) == 0 &&
-                strlen(current->m_pName) - 3 == strlen(target.c_str())) {
-                return reinterpret_cast<T*>(current->m_CreateFn);
+            return reinterpret_cast<T*>(CreateInterface(this->target.c_str(), nullptr));
+        #elif defined(__APPLE__) || defined(__linux__)
+            InterfaceReg* current;
+
+            for (current = this->reg; current; current = current->m_pNext) {
+                if (strcmp(current->m_pName, target.c_str()) == 0 &&
+                    strlen(current->m_pName) - 3 == strlen(target.c_str())) {
+                    return reinterpret_cast<T*>(current->m_CreateFn);
+                }
             }
-        }
+        #endif
 
         return nullptr;
     }
