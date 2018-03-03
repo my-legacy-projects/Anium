@@ -22,7 +22,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "${SHARED_FLAGS}")
 if (WIN32)
     set(CMAKE_DL_LIBS dlfcn-win32::dl psapi)
 elseif (APPLE)
-    set(CMAKE_DL_LIBS dl pthread stdc++fs)
+    set(CMAKE_DL_LIBS dl pthread)
 elseif (UNIX) # Linux
     set(CMAKE_DL_LIBS dl pthread stdc++fs)
 endif()
