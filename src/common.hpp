@@ -7,6 +7,7 @@
 #include "anium.hpp"
 #include "sdk/sdk.hpp"
 #include "interfaces/interfaces.hpp"
+#include "utils/logging.hpp"
 
 #if defined(_WIN32)
     #include <Windows.h>

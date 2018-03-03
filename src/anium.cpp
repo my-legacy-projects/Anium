@@ -1,5 +1,8 @@
 #include "anium.hpp"
 
+// Global logger should be initialized with highest priority so we can start logging directly and early
+Logger __attribute__((init_priority(101))) logger("Anium");
+
 int __attribute__((constructor)) Anium::Init() {
     std::thread aniumThread([&]() -> void {
         Interfaces::Find(); // This method will block and wait until it finds all the interfaces.
@@ -11,7 +14,7 @@ int __attribute__((constructor)) Anium::Init() {
         // Seed random number generator with current time
         srand((unsigned int) time(nullptr));
 
-        std::cout << "Welcome to Anium." << std::endl;
+        logger.log("Welcome to Anium.");
     });
     aniumThread.detach();
 
@@ -21,7 +24,7 @@ int __attribute__((constructor)) Anium::Init() {
 int __attribute__((destructor)) Anium::Destroy() {
     Hooker::Restore();
 
-    std::cout << "Thank you and have a nice day." << std::endl;
+    logger.log("Thank you and have a nice day.");
 
     #if defined(__APPLE__) || defined(__linux__)
         void* self = dlopen(nullptr, RTLD_NOW | RTLD_NOLOAD);

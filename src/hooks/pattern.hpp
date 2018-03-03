@@ -38,7 +38,7 @@ private:
             }
         }
 
-        std::cerr << "[ERROR] Unable to find pattern in " << this->module.GetLibraryName() << "." << std::endl;
+        logger.log("Unable to find pattern in {}.", this->module.GetLibraryName());
         return 0;
     }
 
@@ -57,8 +57,9 @@ public:
 
     uintptr_t Find() {
         if (this->module.GetAddress() == 0 || this->module.GetSize() == 0) {
-            std::cerr << "[ERROR] The SourceLibs address or size weren't initialized before "
-                    "trying to scan for a pattern in it." << std::endl;
+            logger.log("The address or size of the SourceLib weren't initialized before trying"
+                       "to scan for a pattern in it.");
+
             return 0;
         }
 
