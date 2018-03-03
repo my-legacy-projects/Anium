@@ -1,7 +1,11 @@
 #include "anium.hpp"
 
-// Global logger should be initialized with highest priority so we can start logging directly and early
-Logger __attribute__((init_priority(101))) logger("Anium");
+#if defined(_WIN32)
+    Logger logger("Anium");
+#elif defined(__APPLE__) || defined(__linux__)
+    // Global logger should be initialized with highest priority so we can start logging directly and early
+    Logger __attribute__((init_priority(101))) logger("Anium");
+#endif
 
 int Anium::Init(HMODULE self) {
     std::thread aniumThread([&]() -> void {
