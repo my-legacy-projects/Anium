@@ -38,7 +38,7 @@ private:
             }
         }
 
-        logger.log("Unable to find pattern in {}.", this->module.GetLibraryName());
+        logger.log("Unable to find pattern in {}.", this->module.GetLibraryName().c_str());
         return 0;
     }
 

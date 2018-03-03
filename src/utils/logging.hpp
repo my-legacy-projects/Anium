@@ -8,6 +8,9 @@
 #include <ctime>
 #include <sstream>
 #include <cstdarg>
+#include <experimental/filesystem>
+
+namespace fs = std::experimental::filesystem;
 
 class Logger {
 private:
@@ -19,7 +22,9 @@ public:
     Logger(std::string name, bool time = true) {
         this->name = std::move(name);
         this->withTime = time;
-        this->stream.open("/tmp/" + this->name + ".log");
+
+        fs::path tmp = fs::temp_directory_path();
+        this->stream.open(tmp.u8string() + fs::path::preferred_separator + this->name + ".log");
     }
 
     ~Logger() {
