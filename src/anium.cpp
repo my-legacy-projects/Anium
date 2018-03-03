@@ -3,7 +3,7 @@
 // Global logger should be initialized with highest priority so we can start logging directly and early
 Logger __attribute__((init_priority(101))) logger("Anium");
 
-int __attribute__((constructor)) Anium::Init() {
+int Anium::Init(HMODULE self) {
     std::thread aniumThread([&]() -> void {
         Interfaces::Find(); // This method will block and wait until it finds all the interfaces.
 
@@ -21,14 +21,14 @@ int __attribute__((constructor)) Anium::Init() {
     return EXIT_SUCCESS;
 }
 
-int __attribute__((destructor)) Anium::Destroy() {
+int Anium::Destroy(HMODULE self) {
     Hooker::Restore();
 
     logger.log("Thank you and have a nice day.");
 
-    #if defined(__APPLE__) || defined(__linux__)
-        void* self = dlopen(nullptr, RTLD_NOW | RTLD_NOLOAD);
-
+    #if defined(_WIN32)
+        FreeLibraryAndExitThread(self, EXIT_SUCCESS);
+    #elif defined(__APPLE__) || defined(__linux__)
         if (self == nullptr)
             return EXIT_SUCCESS;
 
@@ -41,17 +41,29 @@ int __attribute__((destructor)) Anium::Destroy() {
 
 #if defined(_WIN32)
 
-__declspec(dllexport) BOOL APIENTRY DllMain(HMODULE module, DWORD reason, LPVOID reserved) {
+bool __stdcall DllMain(HMODULE module, DWORD reason, LPVOID reserved) {
     switch (reason) {
         case DLL_PROCESS_ATTACH:
             CreateThread(nullptr, 0, (LPTHREAD_START_ROUTINE) Anium::Init, module, 0, nullptr);
+            break;
         case DLL_PROCESS_DETACH:
             if (reserved == nullptr) {
-                return !((bool) Anium::Destroy());
+                return !((bool) Anium::Destroy(module));
             }
+            break;
     }
 
     return true;
+}
+
+#elif defined(__APPLE__) || defined(__linux__)
+
+int __attribute__((constructor)) Init() {
+    return Anium::Init(dlopen(nullptr, RTLD_NOW | RTLD_NOLOAD));
+}
+
+int __attribute__((destructor)) Destroy() {
+    return Anium::Destroy(dlopen(nullptr, RTLD_NOW | RTLD_NOLOAD));
 }
 
 #endif

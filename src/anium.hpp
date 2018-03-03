@@ -11,13 +11,14 @@
     #define __fastcall
     #define __stdcall
     #define __cdecl
+    #define HMODULE void*
 #endif
 
 namespace Anium {
 
-    int Init();
+    int Init(HMODULE self = nullptr);
 
-    int Destroy();
+    int Destroy(HMODULE self = nullptr);
 
 }
 
