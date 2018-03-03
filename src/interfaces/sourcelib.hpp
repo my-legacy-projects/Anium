@@ -138,23 +138,31 @@ public:
             std::string target = std::move(_linux);
         #endif
 
-        if (this->reg == nullptr) {
-            // The reg is null - let's try to get it
-            if (!Init())
+        #if defined(_WIN32)
+            if (!GetProcAddress(this->module.c_str(), "CreateInterface")) {
+                // The module isn't available yet, wait 2 seconds and then try again
                 std::this_thread::sleep_for(std::chrono::seconds(2));
 
-            // If it looks stupid but it isn't stupid, it ain't stupid
-            return this->GrabInterface<T>(target, target, target);
-        }
+                // If it looks stupid but it isn't stupid, it ain't stupid
+                return this->GrabInterface<T>(target, target, target);
+            }
 
-        #if defined(_WIN32)
             typedef void* (*CreateInterfaceFn) (const char*, int*);
             CreateInterfaceFn func = (CreateInterfaceFn) GetProcAddress(
-                    GetModuleHandleA(this->module.c_str(), "CreateInterface")
+                GetModuleHandleA(this->module.c_str(), "CreateInterface")
             );
 
             return reinterpret_cast<T*>(CreateInterface(this->target.c_str(), nullptr));
         #elif defined(__APPLE__) || defined(__linux__)
+            if (this->reg == nullptr) {
+                // The reg is null - let's try to get it
+                if (!Init())
+                    std::this_thread::sleep_for(std::chrono::seconds(2));
+
+                // If it looks stupid but it isn't stupid, it ain't stupid
+                return this->GrabInterface<T>(target, target, target);
+            }
+
             InterfaceReg* current;
 
             for (current = this->reg; current; current = current->m_pNext) {
