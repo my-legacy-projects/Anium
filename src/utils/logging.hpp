@@ -62,7 +62,7 @@ public:
         std::stringstream stream("");
 
         if (this->withTime)
-            stream << currentTime << " ";
+            stream << currentTime;
 
         char buffer[512];
         va_list varargs;
