@@ -1,6 +1,9 @@
-#pragma once
+#ifndef ANIUM_IBASECLIENTDLL_HPP
+#define ANIUM_IBASECLIENTDLL_HPP
 
 #include <cstdint>
+#include "definitions/EClassIds.hpp"
+#include "../hooks/vfunc.hpp"
 
 struct RecvProp;
 
@@ -66,13 +69,17 @@ public:
     char* m_pNetworkName;
     RecvTable* m_pRecvTable;
     ClientClass* m_pNext;
-    //EClassIds m_ClassID;
+    EClassIds m_ClassID;
 };
 
 class IBaseClientDLL {
 public:
-    /*ClientClass* GetAllClasses() {
-        typedef ClientClass* (* oGetAllClasses)( void* );
-        return getvfunc<oGetAllClasses>( this, 8 )( this );
-    }*/
+
+    ClientClass* GetAllClasses() {
+        typedef ClientClass* (*oGetAllClasses)(void*);
+        return VFunc(this, 8, 8, 8).GetFunction<oGetAllClasses>()(this);
+    }
+
 };
+
+#endif  // ANIUM_IBASECLIENTDLL_HPP

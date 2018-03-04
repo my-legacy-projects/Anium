@@ -1,12 +1,12 @@
 #ifndef ANIUM_SOURCELIB_HPP
 #define ANIUM_SOURCELIB_HPP
 
-#include <string>
-#include <cstring>
-#include <cstdlib>
-#include <iostream>
-#include <thread>
 #include <chrono>
+#include <cstdlib>
+#include <cstring>
+#include <iostream>
+#include <string>
+#include <thread>
 
 #if defined(_WIN32)
     #include <Windows.h>
@@ -129,22 +129,13 @@ public:
     }
 
     template <typename T>
-    T* GrabInterface(std::string _windows, std::string _mac, std::string _linux) {
-        #if defined(_WIN32)
-            std::string target = std::move(_windows);
-        #elif defined(__APPLE__)
-            std::string target = std::move(_mac);
-        #elif defined(__linux__)
-            std::string target = std::move(_linux);
-        #endif
-
+    T* GrabInterface(std::string target) {
         #if defined(_WIN32)
             if (GetProcAddress(GetModuleHandleA(this->module.c_str()), "CreateInterface") == 0) {
                 // The module isn't available yet, wait 2 seconds and then try again
                 std::this_thread::sleep_for(std::chrono::seconds(2));
 
-                // If it looks stupid but it isn't stupid, it ain't stupid
-                return this->GrabInterface<T>(target, target, target);
+                return this->GrabInterface<T>(target);
             }
 
             typedef void* (*CreateInterfaceFn) (const char*, int*);
@@ -159,17 +150,14 @@ public:
                 if (!Init())
                     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-                // If it looks stupid but it isn't stupid, it ain't stupid
-                return this->GrabInterface<T>(target, target, target);
+                return this->GrabInterface<T>(target);
             }
 
             InterfaceReg* current;
 
             for (current = this->reg; current; current = current->m_pNext) {
-                if (strcmp(current->m_pName, target.c_str()) == 0 &&
-                    strlen(current->m_pName) - 3 == strlen(target.c_str())) {
-                    return reinterpret_cast<T*>(current->m_CreateFn);
-                }
+                if (strcmp(current->m_pName, target.c_str()) == 0)
+                    return reinterpret_cast<T*>(current->m_CreateFn());
             }
         #endif
 

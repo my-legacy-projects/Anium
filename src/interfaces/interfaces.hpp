@@ -1,8 +1,8 @@
 #ifndef ANIUM_INTERFACES_HPP
 #define ANIUM_INTERFACES_HPP
 
-#include "../sdk/sdk.hpp"
 #include "sourcelib.hpp"
+#include "../sdk/sdk.hpp"
 
 extern SourceLib clientLib;
 

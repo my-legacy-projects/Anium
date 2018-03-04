@@ -7,5 +7,5 @@ SourceLib clientLib = SourceLib("./csgo/bin/client.dll",
 IBaseClientDLL* client = nullptr;
 
 void Interfaces::Find() {
-    client = clientLib.GrabInterface<IBaseClientDLL>("VClient018", "VClient", "VClient");
+    client = clientLib.GrabInterface<IBaseClientDLL>("VClient018");
 }
