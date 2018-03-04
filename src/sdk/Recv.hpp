@@ -7,12 +7,12 @@ struct RecvProp;
 
 struct DVariant {
     union {
-        float _float;
-        long _int;
-        char* _string;
+        float mFloat;
+        long mInt;
+        char* mString;
         void* data;
         float vector[3];
-        int64_t _int64;
+        int64_t mInt64;
     };
 
     int type;
