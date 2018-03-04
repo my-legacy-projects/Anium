@@ -29,7 +29,7 @@ To build:
 Injection can be done by either `LD_PRELOAD`ing Anium or
 injecting it with your favorite shared library injector.
 
-### Continues Integration
+### Continuous Integration
 
 Windows | Mac OS | Linux
 ------- | ------ | ---------
