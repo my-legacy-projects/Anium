@@ -33,5 +33,5 @@ injecting it with your favorite shared library injector.
 
 Windows | Mac OS | Linux
 ------- | ------ | ---------
-AppVeyor | Travis CI | Circle CI
-Soon™ | ![TravisCI](https://travis-ci.com/Marc3842h/Anium.svg?token=N3JdkxuzfFsy9B38kufx&branch=master) | ![CircleCI](https://img.shields.io/circleci/token/7d783390d7d066504d7ed0be0432dbed58e34324/project/github/Marc3842h/Anium/master.svg)
+VSTS | Travis CI | Circle CI
+![VSTS](https://anium.visualstudio.com/_apis/public/build/definitions/d5ed15f5-b95d-4b52-bf62-fd3265ddf7d4/1/badge) | ![TravisCI](https://travis-ci.com/Marc3842h/Anium.svg?token=N3JdkxuzfFsy9B38kufx&branch=master) | ![CircleCI](https://img.shields.io/circleci/token/7d783390d7d066504d7ed0be0432dbed58e34324/project/github/Marc3842h/Anium/master.svg)
