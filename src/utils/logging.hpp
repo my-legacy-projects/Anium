@@ -40,6 +40,7 @@ public:
     }
 
     ~Logger() {
+        this->stream.flush();
         this->stream.close();
     }
 
@@ -71,6 +72,7 @@ public:
 
         std::cout << stream.str();
         this->stream << stream.str();
+        this->stream.flush();
     }
 
 };
