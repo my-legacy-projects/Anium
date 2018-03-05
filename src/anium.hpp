@@ -16,11 +16,18 @@
     #define HMODULE void*
 #endif
 
+#if defined(_WIN32)
+    extern HMODULE aniumModule;
+#endif
+
 namespace Anium {
 
     int Init(HMODULE self = nullptr);
 
-    int Destroy(HMODULE self = nullptr);
+    int Destroy();
+
+    // Exit() may be called for self shutting down from for example the UI
+    void Exit();
 
 }
 
