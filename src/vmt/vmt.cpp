@@ -1,6 +1,6 @@
 #include "vmt.hpp"
 
-VMTHook clientVMT = nullptr;
+VMTHook* clientVMT = nullptr;
 
 void VMT::Init() {
     clientVMT = new VMTHook(client);
@@ -13,6 +13,6 @@ void VMT::Grab() {
 }
 
 void VMT::Release() {
-    clientVMT.ReleaseAll();
-    delete clientVMT;
+    clientVMT->ReleaseAll();
+    delete(clientVMT);
 }

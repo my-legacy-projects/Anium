@@ -5,7 +5,7 @@
 #include "../hooks/pattern.hpp"
 #include "../interfaces/interfaces.hpp"
 
-extern VMTHook clientVMT;
+extern VMTHook* clientVMT;
 
 namespace VMT {
 

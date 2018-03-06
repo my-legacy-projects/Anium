@@ -2,6 +2,7 @@
 #define ANIUM_PATTERN_HPP
 
 #include "../interfaces/interfaces.hpp"
+#include "../utils/logging.hpp"
 
 #define INRANGE(x, a, b) ((x) >= (a) && (x) <= (b))
 #define getBits(x) (INRANGE(x, '0', '9') ? ((x) - '0') : (((x) & (~0x20)) - 'A' + 0xa))
