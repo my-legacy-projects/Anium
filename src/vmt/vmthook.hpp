@@ -61,7 +61,7 @@ public:
         this->replacement[index] = this->original[index];
 
         for (int i = 0; i < (int) this->hookedFuncs.size(); i++) {
-            std::pair pair = this->hookedFuncs[i];
+            std::pair<int, void*> pair = this->hookedFuncs[i];
 
             if (pair.first == index) {
                 this->hookedFuncs.erase(this->hookedFuncs.begin() + i);
