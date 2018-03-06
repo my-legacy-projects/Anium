@@ -19,7 +19,7 @@ public:
     VMTHook(void* instance) {
         this->instance = (uintptr_t**) instance;
 
-        while (reinterpret_cast<uintptr_t*>(*this->instance)[this->count]) {
+        while ((*this->instance)[this->count]) {
             this->count++;
         }
 
