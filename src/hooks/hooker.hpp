@@ -8,9 +8,6 @@ namespace Hooker {
 
     void Init();
 
-    void Hook();
-    void Restore();
-
 }
 
 #endif //ANIUM_HOOKER_HPP

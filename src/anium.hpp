@@ -5,6 +5,7 @@
 #include <thread>
 #include "common.hpp"
 #include "hooks/hooker.hpp"
+#include "vmt/vmt.hpp"
 
 #if defined(_WIN32)
     #include <Windows.h>

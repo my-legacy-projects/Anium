@@ -16,9 +16,9 @@ int Anium::Init(HMODULE self) {
 
         Interfaces::Find(); // This method will block and wait until it finds all the interfaces.
 
-        Hooker::Init(); // Sig scanning
+        VMT::Init();
 
-        Hooker::Hook(); // VMT Hooking
+        VMT::Grab();
 
         // Seed random number generator with current time
         srand((unsigned int) time(nullptr));
@@ -31,7 +31,7 @@ int Anium::Init(HMODULE self) {
 }
 
 int Anium::Destroy() {
-    Hooker::Restore();
+    VMT::Release();
 
     logger.log("Thank you and have a nice day.");
 
