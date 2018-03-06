@@ -1,4 +1,4 @@
-# Anium
+# Anium [![Discord](https://img.shields.io/discord/420285684994277388.svg?label=Discord)](https://discord.gg/sBjnpFz)
 
 Cross-platform (as in I want to die) training software for Counter-Strike: Global Offensive
 
