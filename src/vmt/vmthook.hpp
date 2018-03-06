@@ -19,9 +19,9 @@ public:
     VMTHook(void* instance) {
         this->instance = (uintptr_t**) instance;
 
-        do {
-            ++this->count;
-        } while (this->instance[this->count] != nullptr);
+        while (reinterpret_cast<uintptr_t*>(*this->instance)[this->count]) {
+            this->count++;
+        }
 
         this->original = *this->instance;
         this->replacement = std::make_unique<uintptr_t[]>(this->count);
