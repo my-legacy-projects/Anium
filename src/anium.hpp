@@ -3,8 +3,8 @@
 
 #include <cstdlib>
 #include <thread>
-#include "common.hpp"
 #include "hooks/hooker.hpp"
+#include "utils/logging.hpp"
 #include "vmt/vmt.hpp"
 
 #if defined(_WIN32)
