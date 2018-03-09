@@ -12,6 +12,7 @@
 #elif defined(__linux__) || defined(__APPLE__)
     // Define Windows-only calling convention to default to nothing on *nix
     #define __fastcall
+    #define __thiscall
     #define __stdcall
     #define __cdecl
     #define HMODULE void*

@@ -65,10 +65,6 @@ public:
         Init(); // Try to load the reg now - deal with it later if it doesn't work yet
     }
 
-    std::string GetLibraryName() {
-        return this->name;
-    }
-
     bool Init() {
         #if defined(__APPLE__) || defined(__linux__)
             void* lib = dlopen(GetLibraryName().c_str(), RTLD_NOLOAD | RTLD_NOW | RTLD_LOCAL);
@@ -162,6 +158,10 @@ public:
         #endif
 
         return nullptr;
+    }
+
+    std::string GetLibraryName() {
+        return this->name;
     }
 
     uintptr_t GetAddress() {
