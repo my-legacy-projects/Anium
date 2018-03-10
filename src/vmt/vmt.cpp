@@ -7,10 +7,6 @@ void VMT::Init() {
     clientVMT->Hook(36, 36, 36, (void*) Hooks::FrameStageNotify);
 }
 
-void VMT::Grab() {
-
-}
-
 void VMT::Release() {
     clientVMT->ReleaseAll();
     delete(clientVMT);

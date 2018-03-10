@@ -18,7 +18,7 @@ int Anium::Init(HMODULE self) {
 
         VMT::Init();
 
-        VMT::Grab();
+        EventBus::Init();
 
         // Seed random number generator with current time
         srand((unsigned int) time(nullptr));

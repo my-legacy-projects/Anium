@@ -12,8 +12,6 @@ namespace VMT {
 
     void Init();
 
-    void Grab();
-
     void Release();
 
 }

@@ -1,8 +1,10 @@
 #include "framestagenotify.hpp"
 
-void Hooks::FrameStageNotify(int frametime) {
-    logger.log("Frame stage: %d", frametime);
+void Hooks::FrameStageNotify(ClientFrameStage_t stage) {
+    FrameStageNotifyEvent event = eventBus.publish<FrameStageNotifyEvent>(stage);
 
-    typedef void (__thiscall*oFrameStageNotify)(void*, int);
-    clientVMT->GetOriginal<oFrameStageNotify>(36, 36, 36)(client, frametime);
+    if (!event.IsCancelled()) {
+        typedef void (__thiscall*oFrameStageNotify)(void*, ClientFrameStage_t);
+        clientVMT->GetOriginal<oFrameStageNotify>(36, 36, 36)(client, stage);
+    }
 }

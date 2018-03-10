@@ -3,6 +3,7 @@
 
 #include <cstdlib>
 #include <thread>
+#include "events/eventbus.hpp"
 #include "hooks/hooker.hpp"
 #include "utils/logging.hpp"
 #include "vmt/vmt.hpp"
