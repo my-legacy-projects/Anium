@@ -1,6 +1,6 @@
 #include "framestagenotify.hpp"
 
-void __stdcall Hooks::FrameStageNotify(int frametime) {
+void Hooks::FrameStageNotify(int frametime) {
     logger.log("Frame stage: %d", frametime);
 
     typedef void (__thiscall*oFrameStageNotify)(void*, int);
