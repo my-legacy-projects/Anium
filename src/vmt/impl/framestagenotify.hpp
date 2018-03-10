@@ -2,10 +2,12 @@
 #define ANIUM_FRAMESTAGENOTIFY_HPP
 
 #include "../../utils/logging.hpp"
+#include "../../anium.hpp"
+#include "../vmt.hpp"
 
-namespace FrameStageNotify {
+namespace Hooks {
 
-    void FrameStageNotifyHook(void* self, int frameStage);
+    void FrameStageNotify(int frametime);
 
 }
 
