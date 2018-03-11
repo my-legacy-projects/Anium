@@ -6,6 +6,11 @@ xcode_project: Anium.xcodeproj
 
 notifications:
   email: false
+  webhooks:
+    urls:
+      - https://rainly.herokuapp.com/travis/422205978617053185/F5k6vETco2WPi3fjXTO7sfpncn5m4nuqgdzu52gx5AWFVyB9Ww7nNRLW43U2P07-t5rx
+    on_success: always
+    on_failure: always
 
 install:
   - cmake .

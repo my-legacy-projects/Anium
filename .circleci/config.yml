@@ -22,3 +22,7 @@ jobs:
       - store_artifacts:
           path: ~/anium/bin/libAnium.so
           destination: libAnium.so
+
+notify:
+  webhooks:
+    - url: https://rainly.herokuapp.com/circle/422205943414128652/jJvVvb07Hdf_53dBoORk_gJQGa4646niCmXAG5uag4nMqe-pXOAWi6wCsJeSs-YAqakt
