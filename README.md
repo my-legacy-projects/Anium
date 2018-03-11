@@ -1,10 +1,10 @@
-# Anium [![Discord](https://img.shields.io/discord/420285684994277388.svg?label=Discord)](https://discord.gg/sBjnpFz)
+# Anium [![Discord](https://img.shields.io/discord/420285684994277388.svg?label=discord)](https://discord.gg/sBjnpFz)
 
 Cross-platform (as in I want to die) training software for Counter-Strike: Global Offensive
 
 | | **Windows** | **macOS** | **Ubuntu**
 | --- | --- | --- | ---
-Anium | ![VSTS](https://img.shields.io/vso/build/anium/d5ed15f5-b95d-4b52-bf62-fd3265ddf7d4/1.svg) | ![Travis](https://travis-ci.com/Marc3842h/Anium.svg?token=N3JdkxuzfFsy9B38kufx&branch=master) | ![Circle](https://img.shields.io/circleci/token/7d783390d7d066504d7ed0be0432dbed58e34324/project/github/Marc3842h/Anium/master.svg)
+Anium | [![VSTS](https://img.shields.io/vso/build/anium/d5ed15f5-b95d-4b52-bf62-fd3265ddf7d4/1.svg)](https://anium.visualstudio.com/Anium/_build) | [![Travis](https://travis-ci.com/Marc3842h/Anium.svg?token=N3JdkxuzfFsy9B38kufx&branch=master)](https://travis-ci.com/Marc3842h/Anium) | [![Circle](https://img.shields.io/circleci/token/7d783390d7d066504d7ed0be0432dbed58e34324/project/github/Marc3842h/Anium/master.svg)](https://circleci.com/gh/Marc3842h/Anium)
 
 ### Setup
 
