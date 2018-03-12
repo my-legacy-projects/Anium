@@ -8,11 +8,7 @@
 #include <ctime>
 #include <sstream>
 #include <cstdarg>
-
-#if !defined(__APPLE__)
-    #include <experimental/filesystem>
-    namespace fs = std::experimental::filesystem;
-#endif
+#include "iohelper.hpp"
 
 class Logger {
 private:
@@ -21,22 +17,14 @@ private:
     std::ofstream stream;
 
 public:
-    Logger(std::string name, bool time = true) {
+    explicit Logger(const std::string& name, bool time = true) {
         this->name = std::move(name);
         this->withTime = time;
 
-        // Apple Clang doesn't have support for <filesystem> nor <experimental/filesystem>
-        // So we'll just hard code the path to the temp. directory
-        #if defined(__APPLE__)
-            this->stream.open("/tmp/" + this->name + ".log");
-        #else
-            char separator = fs::path::preferred_separator;
+        std::stringstream logFilePath(io::GetTempDirectory());
+        logFilePath << io::GetPathSeparator() << this->name << ".log";
 
-            std::stringstream logFilePath("");
-            logFilePath << fs::temp_directory_path().u8string() << separator << this->name << ".log";
-
-            this->stream.open(logFilePath.str());
-        #endif
+        this->stream.open(logFilePath.str());
     }
 
     ~Logger() {
@@ -44,7 +32,7 @@ public:
         this->stream.close();
     }
 
-    void log(std::string message, ...) {
+    void log(const std::string& message, ...) {
         std::string currentTime = []() -> std::string {
             struct tm timeStruct;
             char buffer[80];
