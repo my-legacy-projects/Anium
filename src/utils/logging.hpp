@@ -32,7 +32,7 @@ public:
         this->stream.close();
     }
 
-    void log(const std::string& message, ...) {
+    void log(std::string message, ...) {
         std::string currentTime = []() -> std::string {
             struct tm timeStruct;
             char buffer[80];

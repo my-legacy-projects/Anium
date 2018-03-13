@@ -13,6 +13,7 @@
 #endif
 
 #if defined(__APPLE__)
+    #include <sys/syslimits.h>
     // AppleClang doesn't have filesystem at all?
     //#include <boost/filesystem>
     //namespace fs = boost::filesystem;
