@@ -75,7 +75,7 @@ std::string io::GetTempDirectory() {
 }
 
 std::string io::GetWorkingDirectory() {
-    #if !defined(__APPLE__)
+    #if defined(__APPLE__)
         char buffer[PATH_MAX];
         getcwd(buffer, sizeof(buffer));
 
@@ -86,7 +86,6 @@ std::string io::GetWorkingDirectory() {
     #else
         return fs::current_path().u8string();
     #endif
-
 }
 
 std::string io::GetAniumDirectory() {

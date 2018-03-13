@@ -2,14 +2,14 @@
 #define ANIUM_IOHELPER_HPP
 
 #include <algorithm>
-#include <string>
+#include <cstdio>
 #include <cstring>
+#include <string>
 
 #if defined(__APPLE__) || defined(__linux__)
     #include <pwd.h>
-    #include <zconf.h>
     #include <sys/stat.h>
-    #include <cstdio>
+    #include <unistd.h>
 #endif
 
 #if defined(__APPLE__)
@@ -20,9 +20,14 @@
     #if defined(__has_include)
         #if __has_include(<filesystem>)
             #include <filesystem>
-            namespace fs = std::filesystem;
+
+            #if defined(_WIN32)
+                // Workaround for Windows: https://docs.microsoft.com/en-us/cpp/standard-library/filesystem
+                namespace fs = std::experimental::filesystem::v1;
+            #else
+                namespace fs = std::filesystem;
+            #endif
         #else
-            // Filesystem doesn't exist, it's in experimental state
             #include <experimental/filesystem>
             namespace fs = std::experimental::filesystem;
         #endif
