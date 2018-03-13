@@ -77,9 +77,9 @@ std::string io::GetTempDirectory() {
 std::string io::GetWorkingDirectory() {
     #if defined(__APPLE__)
         char buffer[PATH_MAX];
-        getcwd(buffer, sizeof(buffer));
+        char* result = getcwd(buffer, sizeof(buffer));
 
-        if (buffer == nullptr)
+        if (result == nullptr)
             return "./";
 
         return std::string(buffer);
