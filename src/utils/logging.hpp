@@ -1,13 +1,13 @@
 #ifndef ANIUM_LOGGING_HPP
 #define ANIUM_LOGGING_HPP
 
-#include <iostream>
-#include <fstream>
-#include <string>
+#include <cstdarg>
 #include <cstdio>
 #include <ctime>
+#include <fstream>
+#include <iostream>
 #include <sstream>
-#include <cstdarg>
+#include <string>
 #include "iohelper.hpp"
 
 class Logger {
@@ -21,10 +21,7 @@ public:
         this->name = std::move(name);
         this->withTime = time;
 
-        std::stringstream logFilePath(io::GetTempDirectory());
-        logFilePath << io::GetPathSeparator() << this->name << ".log";
-
-        this->stream.open(logFilePath.str());
+        this->stream.open(io::GetTempDirectory() + io::GetPathSeparator() + this->name + ".log");
     }
 
     ~Logger() {

@@ -1,17 +1,18 @@
 #ifndef ANIUM_VMTHOOK_HPP
 #define ANIUM_VMTHOOK_HPP
 
+#include <cassert>
 #include <cstring>
 #include <memory>
 #include <vector>
 
 class VMTHook {
 private:
-    uintptr_t** instance; // baseclass
-    size_t count; // Amount of methods in this class
+    uintptr_t** instance;
+    size_t count = 0;
 
     uintptr_t* original;
-    std::unique_ptr<uintptr_t[]> replacement; // current
+    std::unique_ptr<uintptr_t[]> replacement;
 
     std::vector<std::pair<int, void*>> hookedFuncs;
 
