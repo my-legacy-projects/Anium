@@ -57,9 +57,9 @@ void Anium::Exit() {
             return;
         }
 
-        dlclose(self);
-        dlclose(self);
-        dlclose(self);
+        dlclose(self); // dlopen call above (to get self)
+        dlclose(self); // dlopen call on constructor when invoking Anium::Init (below)
+        dlclose(self); // Injectors that calls dlopen, does not apply when LD_PRELOAD'ed
     #endif
 }
 
