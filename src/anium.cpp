@@ -27,7 +27,11 @@ int Anium::Init(HMODULE self) {
     });
     aniumThread.detach();
 
-    return EXIT_SUCCESS;
+    #if defined(_WIN32)
+        FreeLibraryAndExitThread(aniumModule, EXIT_SUCCESS);
+    #elif defined(__APPLE__) || defined(__linux__)
+        return EXIT_SUCCESS;
+    #endif
 }
 
 int Anium::Destroy() {
@@ -68,6 +72,7 @@ void Anium::Exit() {
 bool __stdcall DllMain(HMODULE module, DWORD reason, LPVOID reserved) {
     switch (reason) {
         case DLL_PROCESS_ATTACH:
+            DisableThreadLibraryCalls(module);
             return CreateThread(nullptr, 0, (LPTHREAD_START_ROUTINE) Anium::Init, module, 0, nullptr) != nullptr;
         case DLL_PROCESS_DETACH:
             if (reserved == nullptr) {
