@@ -11,6 +11,7 @@
 
 #if defined(_WIN32)
     #include <Windows.h>
+    #include <Psapi.h>
 #elif defined(__APPLE__)
     #include <mach-o/dyld.h>
     #include <mach-o/getsect.h>
