@@ -5,6 +5,7 @@
 #include <cstring>
 #include <memory>
 #include <vector>
+#include "../utils/logging.hpp"
 
 class VMTHook {
 private:
@@ -23,6 +24,8 @@ public:
         while ((*this->instance)[this->count]) {
             this->count++;
         }
+
+        logger.log("Found %i virtual methods in %p.", this->count, &this->instance);
 
         this->original = *this->instance;
         this->replacement = std::make_unique<uintptr_t[]>(this->count);
@@ -48,6 +51,8 @@ public:
 
         this->replacement[index] = reinterpret_cast<uintptr_t>(replacement);
         this->hookedFuncs.emplace_back(std::pair<int, void*>(index, replacement));
+
+        logger.log("Hooked #%i in %p to %p.", index, &this->instance, &replacement);
     }
 
     void Release(int _windows, int _mac, int _linux) {
@@ -68,6 +73,8 @@ public:
                 this->hookedFuncs.erase(this->hookedFuncs.begin() + i);
             }
         }
+
+        logger.log("Released hook #%i in %p.", index, &this->instance);
     }
 
     void ReleaseAll() {

@@ -47,10 +47,10 @@ public:
         if (this->withTime)
             stream << currentTime;
 
-        char buffer[512];
+        char buffer[512]; // If you print over 512 chars go to hell
         va_list varargs;
         va_start(varargs, message);
-        sprintf(buffer, message.c_str(), varargs);
+        vsnprintf(buffer, sizeof(buffer), message.c_str(), varargs);
         va_end(varargs);
 
         stream << " - " << this->name << " - " << buffer << std::endl;

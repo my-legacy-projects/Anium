@@ -23,7 +23,7 @@ int Anium::Init(HMODULE self) {
         // Seed random number generator with current time
         srand((unsigned int) time(nullptr));
 
-        logger.log("Welcome to Anium.");
+        logger.log("Welcome to Anium on %s.", PlatformUtils::GetPlatformName().c_str());
     });
     aniumThread.detach();
 

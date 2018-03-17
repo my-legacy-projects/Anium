@@ -7,18 +7,18 @@
 #include <iostream>
 #include <string>
 #include <thread>
+#include "../utils/logging.hpp"
 
 #if defined(_WIN32)
     #include <Windows.h>
-    #include <Psapi.h>
 #elif defined(__APPLE__)
-    #include <sys/types.h>
-    #include <mach/error.h>
-    #include <mach/vm_types.h>
     #include <mach-o/dyld.h>
     #include <mach-o/getsect.h>
+    #include <mach/error.h>
     #include <mach/mach.h>
+    #include <mach/vm_types.h>
     #include <sys/stat.h>
+    #include <sys/types.h>
 #elif defined(__linux__)
     #include <link.h>
 #endif
@@ -83,7 +83,6 @@ public:
         #endif
 
         #if defined(_WIN32)
-            // Credit: https://github.com/emskye96/chameleon-ng/blob/master/src/FindPattern.hpp#L44
             MODULEINFO info = { 0 };
 
             GetModuleInformation(GetCurrentProcess(), GetModuleHandleA(this->module.c_str()), &info, sizeof(MODULEINFO));
@@ -134,29 +133,35 @@ public:
                 return this->GrabInterface<T>(target);
             }
 
-            typedef void* (*CreateInterfaceFn) (const char*, int*);
+            typedef void* (*CreateInterfaceFn)(const char*, int*);
             CreateInterfaceFn func = (CreateInterfaceFn) GetProcAddress(
                 GetModuleHandleA(this->module.c_str()), "CreateInterface"
             );
 
-            return reinterpret_cast<T*>(func(target.c_str(), nullptr));
+            T* interface = reinterpret_cast<T*>(func(target.c_str(), nullptr));
+
+            logger.log("Found %s: %p", target.c_str(), &interface);
+            return interface;
         #elif defined(__APPLE__) || defined(__linux__)
             if (this->reg == nullptr) {
-                // The reg is null - let's try to get it
+                // The reg is null, try to get it or wait 2 seconds and then try again
                 if (!Init())
                     std::this_thread::sleep_for(std::chrono::seconds(2));
 
                 return this->GrabInterface<T>(target);
             }
 
-            InterfaceReg* current;
+            for (InterfaceReg* current = this->reg; current != nullptr; current = current->m_pNext) {
+                if (strcmp(current->m_pName, target.c_str()) == 0) {
+                    T* interface = reinterpret_cast<T*>(current->m_CreateFn());
 
-            for (current = this->reg; current; current = current->m_pNext) {
-                if (strcmp(current->m_pName, target.c_str()) == 0)
-                    return reinterpret_cast<T*>(current->m_CreateFn());
+                    logger.log("Found %s: %p", target.c_str(), &interface);
+                    return interface;
+                }
             }
         #endif
 
+        logger.log("Unable to find %s.", target.c_str());
         return nullptr;
     }
 

@@ -6,6 +6,7 @@
 #include "events/eventbus.hpp"
 #include "hooks/hooker.hpp"
 #include "utils/logging.hpp"
+#include "utils/platformutils.hpp"
 #include "vmt/vmt.hpp"
 
 #if defined(_WIN32)
