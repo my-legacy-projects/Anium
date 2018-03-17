@@ -139,10 +139,10 @@ public:
                 GetModuleHandleA(this->module.c_str()), "CreateInterface"
             );
 
-            T* interface = reinterpret_cast<T*>(func(target.c_str(), nullptr));
+            T* targetInterface = reinterpret_cast<T*>(func(target.c_str(), nullptr));
 
-            logger.log("Found %s: %p", target.c_str(), &interface);
-            return interface;
+            logger.log("Found %s: %p", target.c_str(), &targetInterface);
+            return targetInterface;
         #elif defined(__APPLE__) || defined(__linux__)
             if (this->reg == nullptr) {
                 // The reg is null, try to get it or wait 2 seconds and then try again
