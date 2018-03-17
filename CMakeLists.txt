@@ -16,9 +16,9 @@ endif()
 set(SHARED_FLAGS "-O3 -Wall -fPIC")
 
 if(CPP20)
-    set(SHARED_FLAGS "${SHARED_FLAGS} --std=c++2a")
+    set(SHARED_FLAGS "${SHARED_FLAGS} -std=c++2a")
 else()
-    set(SHARED_FLAGS "${SHARED_FLAGS} --std=c++17")
+    set(SHARED_FLAGS "${SHARED_FLAGS} -std=c++17")
 endif()
 
 set(CMAKE_CXX_FLAGS_DEBUG "${SHARED_FLAGS} -g3 -ggdb")
