@@ -141,7 +141,7 @@ public:
 
             T* targetInterface = reinterpret_cast<T*>(func(target.c_str(), nullptr));
 
-            logger.log("Found %s: %p", target.c_str(), &targetInterface);
+            logger.log("Found %s: 0x%08X", target.c_str(), &targetInterface);
             return targetInterface;
         #elif defined(__APPLE__) || defined(__linux__)
             if (this->reg == nullptr) {
@@ -156,7 +156,7 @@ public:
                 if (strcmp(current->m_pName, target.c_str()) == 0) {
                     T* interface = reinterpret_cast<T*>(current->m_CreateFn());
 
-                    logger.log("Found %s: %p", target.c_str(), &interface);
+                    logger.log("Found %s: 0x%08X", target.c_str(), &interface);
                     return interface;
                 }
             }

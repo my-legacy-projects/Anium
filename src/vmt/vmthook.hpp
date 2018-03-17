@@ -25,7 +25,7 @@ public:
             this->count++;
         }
 
-        logger.log("Found %i virtual methods in %p.", this->count, &this->instance);
+        logger.log("Found %i virtual methods in 0x%08X.", this->count, &this->instance);
 
         this->original = *this->instance;
         this->replacement = std::make_unique<uintptr_t[]>(this->count);
@@ -52,7 +52,7 @@ public:
         this->replacement[index] = reinterpret_cast<uintptr_t>(replacement);
         this->hookedFuncs.emplace_back(std::pair<int, void*>(index, replacement));
 
-        logger.log("Hooked #%i in %p to %p.", index, &this->instance, &replacement);
+        logger.log("Hooked #%i in 0x%08X to 0x%08X.", index, &this->instance, &replacement);
     }
 
     void Release(int _windows, int _mac, int _linux) {
@@ -74,7 +74,7 @@ public:
             }
         }
 
-        logger.log("Released hook #%i in %p.", index, &this->instance);
+        logger.log("Released hook #%i in 0x%08X.", index, &this->instance);
     }
 
     void ReleaseAll() {
