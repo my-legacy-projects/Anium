@@ -11,7 +11,7 @@
 int Anium::Init(HMODULE self) {
     std::thread aniumThread([&]() -> void {
         #if defined(_WIN32)
-            aniumModule = self; // May be nullptr but we check for that in Exit()
+            aniumModule = self; // May be nullptr but we check for that in Anium::Exit()
         #endif
 
         Interfaces::Find(); // This method will block and wait until it finds all the interfaces.
@@ -20,8 +20,9 @@ int Anium::Init(HMODULE self) {
 
         EventBus::Init();
 
-        // Seed random number generator with current time
-        srand((unsigned int) time(nullptr));
+        NetVar::InitAll();
+
+        srand((unsigned int) time(nullptr)); // Seed random number generator with current time
 
         logger.log("Welcome to Anium on %s.", PlatformUtils::GetPlatformName().c_str());
     });
