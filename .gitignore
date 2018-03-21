@@ -3,6 +3,7 @@
 ### Anium ###
 
 gdb.txt
+reverse/ # This is just a directory where I store game files for CS:GO Windows and macOS, also symlinked CS:GO Linux
 
 ### C++ ###
 # Prerequisites

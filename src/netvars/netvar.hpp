@@ -20,7 +20,7 @@ private:
 
     NetVar* next; // Recursion
 
-    static NetVarTree tree;
+    static inline NetVarTree tree;
 
     void Init() {
         this->offset = this->tree.FindOffset(this->tables);
