@@ -1,13 +1,18 @@
 #ifndef ANIUM_PLATFORMUTILS_HPP
 #define ANIUM_PLATFORMUTILS_HPP
 
+#include <cstdio>
+#include <sstream>
 #include <string>
 
-#if defined(__APPLE__) || defined(__linux__)
+#if defined(_WIN32)
+    #include <Windows.h>
+    #include <VersionHelpers.h>
+#elif defined(__APPLE__) || defined(__linux__)
     #include <sys/utsname.h>
 #endif
 
-namespace PlatformUtils {
+namespace Platforms {
 
     std::string GetPlatformName();
 
