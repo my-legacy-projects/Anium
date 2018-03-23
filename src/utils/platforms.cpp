@@ -17,7 +17,7 @@ std::string Platforms::GetPlatformName() {
     #elif defined(__APPLE__) || defined(__linux__)
         struct utsname uts;
         uname(&uts);
-        return std::string(uts.sysname) + " " + std::string(uts.version);
+        return std::string(uts.sysname) + " " + std::string(uts.release);
     #endif
 }
 

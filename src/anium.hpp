@@ -7,7 +7,7 @@
 #include "hooks/hooker.hpp"
 #include "netvars/netvar.hpp"
 #include "utils/logging.hpp"
-#include "utils/platformutils.hpp"
+#include "utils/platforms.hpp"
 #include "vmt/vmt.hpp"
 
 #if defined(_WIN32)
