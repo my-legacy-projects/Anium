@@ -24,7 +24,7 @@ int Anium::Init(HMODULE self) {
 
         srand((unsigned int) time(nullptr)); // Seed random number generator with current time
 
-        logger.log("Welcome to Anium on %s.", PlatformUtils::GetPlatformName().c_str());
+        logger.log("Welcome to Anium on %s.", Platforms::GetPlatformName().c_str());
     });
     aniumThread.detach();
 
@@ -55,16 +55,17 @@ void Anium::Exit() {
 
         FreeLibraryAndExitThread(aniumModule, EXIT_SUCCESS);
     #elif defined(__APPLE__) || defined(__linux__)
-        void* self = dlopen(nullptr, RTLD_NOW | RTLD_NOLOAD);
+        Dl_info dlInfo;
 
-        if (self == nullptr) {
+        if (dladdr((void*) Anium::Init, &dlInfo) == 0) {
             Anium::Destroy();
             return;
         }
 
-        dlclose(self); // dlopen call above (to get self)
-        dlclose(self); // dlopen call on constructor when invoking Anium::Init (below)
-        dlclose(self); // Injectors that calls dlopen, does not apply when LD_PRELOAD'ed
+        void* handle = dlopen(dlInfo.dli_fname, RTLD_NOW | RTLD_NOLOAD);
+
+        dlclose(handle); // dlopen call above (to get self)
+        dlclose(handle); // Injectors that calls dlopen, does not apply when LD_PRELOAD'ed
     #endif
 }
 
@@ -88,7 +89,7 @@ bool __stdcall DllMain(HMODULE module, DWORD reason, LPVOID reserved) {
 #elif defined(__APPLE__) || defined(__linux__)
 
 int __attribute__((constructor)) Init() {
-    return Anium::Init(dlopen(nullptr, RTLD_NOW | RTLD_NOLOAD));
+    return Anium::Init();
 }
 
 int __attribute__((destructor)) Destroy() {
