@@ -11,9 +11,11 @@ if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE RELEASE)
 endif()
 
-set(SHARED_FLAGS "-O3 -Wall -Wextra -Wno-unused-parameter -fPIC")
+set(SHARED_FLAGS "-O3 -Wall -fPIC -std=c++17")
 
-set(SHARED_FLAGS "${SHARED_FLAGS} -std=c++17")
+if (NOT MSVC)
+    set(SHARED_FLAGS "-Wextra -Wno-unused-parameter")
+endif()
 
 set(CMAKE_CXX_FLAGS_DEBUG "${SHARED_FLAGS} -g3 -ggdb")
 set(CMAKE_CXX_FLAGS_RELEASE "${SHARED_FLAGS}")
