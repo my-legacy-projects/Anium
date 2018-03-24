@@ -13,7 +13,7 @@ std::string Platforms::GetPlatformName() {
 
         GetVersionEx((LPOSVERSIONINFO) &info);
 
-        return "Windows " + std::string(info.dwMajorVersion) + "." + std::string(info.dwMinorVersion);
+        return "Windows " + std::to_string(info.dwMajorVersion) + "." + std::to_string(info.dwMinorVersion);
     #elif defined(__APPLE__) || defined(__linux__)
         struct utsname uts;
         uname(&uts);
