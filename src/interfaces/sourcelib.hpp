@@ -140,7 +140,6 @@ public:
 
             T* targetInterface = reinterpret_cast<T*>(func(target.c_str(), nullptr));
 
-            logger.log("Found %s: 0x%08X", target.c_str(), &targetInterface);
             return targetInterface;
         #elif defined(__APPLE__) || defined(__linux__)
             if (this->reg == nullptr) {
