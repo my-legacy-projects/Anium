@@ -5,8 +5,11 @@
 #include "../sdk/sdk.hpp"
 
 extern SourceLib clientLib;
+extern SourceLib vStdLib;
+extern SourceLib materialSystemLib;
 
 extern IBaseClientDLL* client;
+extern ICvar* cvar;
 
 namespace Interfaces {
 

@@ -1,0 +1,8 @@
+#ifndef ANIUM_CONCOMMANDBASE_HPP
+#define ANIUM_CONCOMMANDBASE_HPP
+
+class ConCommandBase {
+
+};
+
+#endif  // ANIUM_CONCOMMANDBASE_HPP

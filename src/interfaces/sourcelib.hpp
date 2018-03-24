@@ -7,7 +7,6 @@
 #include <iostream>
 #include <string>
 #include <thread>
-#include "../utils/logging.hpp"
 
 #if defined(_WIN32)
     #include <Windows.h>
@@ -156,13 +155,11 @@ public:
                 if (strcmp(current->m_pName, target.c_str()) == 0) {
                     T* interface = reinterpret_cast<T*>(current->m_CreateFn());
 
-                    logger.log("Found %s: 0x%08X", target.c_str(), &interface);
                     return interface;
                 }
             }
         #endif
 
-        logger.log("Unable to find %s.", target.c_str());
         return nullptr;
     }
 

@@ -8,6 +8,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include "../interfaces/interfaces.hpp"
 #include "iohelper.hpp"
 
 class Logger {
@@ -54,6 +55,14 @@ public:
         va_end(varargs);
 
         stream << " - " << this->name << " - " << buffer << std::endl;
+
+        if (cvar != nullptr) {
+            std::stringstream engineConsole("");
+            engineConsole << " - " << currentTime << " - " << buffer << std::endl;
+
+            cvar->ConsoleColorPrintf(Color(255, 169, 10), "Anium");
+            cvar->ConsoleColorPrintf(Color(255, 255, 255), engineConsole.str().c_str());
+        }
 
         std::cout << stream.str();
         this->stream << stream.str();
