@@ -23,6 +23,7 @@
 
 #if defined(_WIN32)
     extern HMODULE aniumModule;
+    extern bool aniumActive;
 #endif
 
 namespace Anium {

@@ -3,6 +3,7 @@
 #if defined(_WIN32)
     Logger logger("Anium");
     HMODULE aniumModule = nullptr;
+    bool aniumActive = false;
 #elif defined(__APPLE__) || defined(__linux__)
     // Global logger should be initialized with highest priority so we can start logging directly and early
     Logger __attribute__((init_priority(101))) logger("Anium");
@@ -12,6 +13,7 @@ int Anium::Init(HMODULE self) {
     std::thread aniumThread([&]() -> void {
         #if defined(_WIN32)
             aniumModule = self; // May be nullptr but we check for that in Anium::Exit()
+            aniumActive = true;
         #endif
 
         Interfaces::Find(); // This method will block and wait until it finds all the interfaces.
@@ -29,6 +31,9 @@ int Anium::Init(HMODULE self) {
     aniumThread.detach();
 
     #if defined(_WIN32)
+        while (aniumActive)
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+
         FreeLibraryAndExitThread(aniumModule, EXIT_SUCCESS);
     #elif defined(__APPLE__) || defined(__linux__)
         return EXIT_SUCCESS;
@@ -48,6 +53,8 @@ int Anium::Destroy() {
 // This won't remove us from the loaded libs but will unload in-game stuff, so that'll hopefully be fine.
 void Anium::Exit() {
     #if defined(_WIN32)
+        aniumActive = false;
+
         if (aniumModule == nullptr) {
             Anium::Destroy();
             return;
@@ -64,8 +71,9 @@ void Anium::Exit() {
 
         void* handle = dlopen(dlInfo.dli_fname, RTLD_NOW | RTLD_NOLOAD);
 
-        dlclose(handle); // dlopen call above (to get self)
-        dlclose(handle); // Injectors that calls dlopen, does not apply when LD_PRELOAD'ed
+        dlclose(handle);
+        dlclose(handle);
+        dlclose(handle);
     #endif
 }
 
