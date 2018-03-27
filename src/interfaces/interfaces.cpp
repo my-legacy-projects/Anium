@@ -4,10 +4,10 @@ SourceLib clientLib = SourceLib("./csgo/bin/client.dll",
                                 "./csgo/bin/osx64/client.dylib",
                                 "./csgo/bin/linux64/client_client.so");
 SourceLib vStdLib = SourceLib("./bin/vstdlib.dll",
-                              "./bin/libvstdlib.dylib",
+                              "./bin/osx64/libvstdlib.dylib",
                               "./bin/linux64/libvstdlib.so");
 SourceLib materialSystemLib = SourceLib("./bin/materialsystem.dll",
-                                        "./bin/materialsystem.dylib",
+                                        "./bin/osx64/materialsystem.dylib",
                                         "./bin/linux64/materialsystem_client.so");
 
 IBaseClientDLL* client = nullptr;
