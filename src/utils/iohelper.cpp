@@ -7,7 +7,23 @@ bool io::Create(std::string path) {
         return true;
 
     #if defined(__APPLE__)
-        return mkdir(path.c_str(), S_IRWXU) == 0;
+        // This function is expected to create directories recursively.
+        // filesystem::create_directories does that, but macOS sadly doesn't have that :(
+        // Credit to https://gist.github.com/JonathonReinhart/8c0d90191c38af2dcadb102c4e202950
+        char buffer[PATH_MAX];
+
+        strcpy(buffer, path.c_str());
+
+        for (char* c = buffer + 1; c != nullptr; c++) {
+            if (*c == io::GetPathSeparator()) {
+                if (mkdir(path.c_str(), S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH) != 0) {
+                    if (errno != EEXIST)
+                        return false;
+                }
+            }
+        }
+
+        return mkdir(path.c_str(), S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH) == 0;
     #else
         return fs::create_directories(fs::u8path(path));
     #endif
@@ -30,8 +46,8 @@ bool io::Exists(std::string path) {
     io::Convert(path);
 
     #if defined(__APPLE__)
-        struct stat buffer;
-        return stat(path.c_str(), &buffer) == 0;
+        struct stat sb;
+        return stat(path.c_str(), &sb) == 0;
     #else
         return fs::exists(fs::u8path(path));
     #endif
@@ -48,15 +64,15 @@ char io::GetPathSeparator() {
 std::string io::GetUserDirectory() {
     #if defined(_WIN32)
         const char* dir = getenv("USERPROFILE");
-        if (dir == nullptr)
-            return strcat(getenv("HOMEDRIVE"), getenv("HOMEPATH"));
+        if (dir != nullptr)
+            return std::string(getenv("HOMEDRIVE")) + io::GetPathSeparator() + std::string(getenv("HOMEPATH"));
 
         return dir;
     #else
         const char* dir = getenv("HOME");
         if (dir == nullptr) {
             passwd* pwd = getpwuid(getuid());
-            if (pwd == nullptr)
+            if (pwd == nullptr || pwd->pw_dir == nullptr)
                 return io::GetWorkingDirectory();
 
             return pwd->pw_dir;
