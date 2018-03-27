@@ -67,7 +67,7 @@ public:
 
     bool Init() {
         #if defined(__APPLE__) || defined(__linux__)
-            void* lib = dlopen(GetLibraryName().c_str(), RTLD_NOLOAD | RTLD_NOW | RTLD_LOCAL);
+            void* lib = dlopen(GetLibraryName().c_str(), RTLD_NOW | RTLD_NOLOAD);
 
             if (lib == nullptr)
                 return false;
@@ -91,7 +91,7 @@ public:
             this->size = (size_t) info.SizeOfImage;
         #elif defined(__APPLE__)
             // Credit: https://github.com/scen/libembryo/blob/master/src/mem/module.cpp#L15
-            for (int i = 0; i < _dyld_image_count(); i++) {
+            for (unsigned int i = 0; i < _dyld_image_count(); i++) {
                 mach_header* header = (mach_header*) _dyld_get_image_header(i);
 
                 std::string name(_dyld_get_image_name(i));
@@ -151,7 +151,7 @@ public:
             }
 
             for (InterfaceReg* current = this->reg; current != nullptr; current = current->m_pNext) {
-                if (strcmp(current->m_pName, target.c_str()) == 0) {
+                if (target.find(current->m_pName) != std::string::npos) {
                     T* interface = reinterpret_cast<T*>(current->m_CreateFn());
 
                     return interface;
