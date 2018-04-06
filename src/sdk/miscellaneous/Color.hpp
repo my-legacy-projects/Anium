@@ -40,18 +40,6 @@ public:
         return this->a;
     }
 
-    static Color WHITE = Color(255, 255, 255);
-    static Color BLUE = Color(0, 0, 255);
-    static Color GREEN = Color(0, 255, 0);
-    static Color RED = Color(255, 0, 0);
-    static Color YELLOW = Color(255, 255, 0);
-    static Color CYAN = Color(0, 139, 139);
-    static Color PINK = Color(255, 192, 203);
-    static Color PURPLE = Color(128, 0, 128);
-    static Color ORANGE = Color(255, 165, 0);
-    static Color GRAY = Color(128, 128, 128);
-    static Color BLACK = Color(0, 0, 0);
-
 };
 
 struct ColorExp {
@@ -61,5 +49,17 @@ struct ColorExp {
     char exponent;
 
 };
+
+static Color WHITE = Color(255, 255, 255);
+static Color BLUE = Color(0, 0, 255);
+static Color GREEN = Color(0, 255, 0);
+static Color RED = Color(255, 0, 0);
+static Color YELLOW = Color(255, 255, 0);
+static Color CYAN = Color(0, 139, 139);
+static Color PINK = Color(255, 192, 203);
+static Color PURPLE = Color(128, 0, 128);
+static Color ORANGE = Color(255, 165, 0);
+static Color GRAY = Color(128, 128, 128);
+static Color BLACK = Color(0, 0, 0);
 
 #endif  // ANIUM_COLOR_HPP

@@ -12,7 +12,7 @@ private:
     int firstFreeSlot;
 
 public:
-    int Register(C_BaseEntity* entity, Color color = Color::WHITE, bool renderOccluded = false,
+    int Register(C_BaseEntity* entity, Color color = WHITE, bool renderOccluded = false,
                  bool renderUnoccluded = false, int splitScreenSlot = 0) {
         if (this->firstFreeSlot == -1)
             return -1;
