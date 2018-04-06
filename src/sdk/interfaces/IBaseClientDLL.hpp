@@ -2,9 +2,9 @@
 #define ANIUM_IBASECLIENTDLL_HPP
 
 #include <cstdint>
-#include "definitions/EClassIds.hpp"
-#include "../hooks/vfunc.hpp"
-#include "Recv.hpp"
+#include "../../hooks/vfunc.hpp"
+#include "../definitions/EClassIds.hpp"
+#include "../miscellaneous/Recv.hpp"
 
 class IClientNetworkable;
 
@@ -19,11 +19,11 @@ public:
     RecvTable* recvTable;
     ClientClass* next;
     EClassIds classID;
+
 };
 
 class IBaseClientDLL {
 public:
-
     ClientClass* GetAllClasses() {
         typedef ClientClass* (*oGetAllClasses)(void*);
         return VFunc(this, 8, 8, 8).GetFunction<oGetAllClasses>()(this);

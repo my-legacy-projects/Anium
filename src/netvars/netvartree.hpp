@@ -5,7 +5,9 @@
 #include <utility>
 #include <vector>
 #include "../interfaces/interfaces.hpp"
-#include "../sdk/sdk.hpp"
+#include "../sdk/miscellaneous/Recv.hpp"
+#include "../sdk/interfaces/IBaseClientDLL.hpp"
+#include "../utils/logging.hpp"
 
 struct TreeNode; // Pre-declare TreeNode
 

@@ -1,9 +1,8 @@
 #ifndef ANIUM_ECLASSIDS_HPP
 #define ANIUM_ECLASSIDS_HPP
 
-enum class EClassIds : int
-{
-    CAI_BaseNPC = 0,
+enum class EClassIds : int {
+    CAI_BaseNPC,
     CAK47,
     CBaseAnimating,
     CBaseAnimatingOverlay,
@@ -256,6 +255,7 @@ enum class EClassIds : int
     SmokeTrail,
     SporeExplosion,
     SporeTrail
+
 };
 
 #endif //ANIUM_ECLASSIDS_HPP

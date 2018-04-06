@@ -2,6 +2,9 @@
 #define ANIUM_DEFINITIONS_HPP
 
 #include "ClientFrameStage.hpp"
+#include "DataUpdateType.hpp"
 #include "EClassIds.hpp"
+#include "Matrix.hpp"
+#include "Model.hpp"
 
 #endif  // ANIUM_DEFINITIONS_HPP

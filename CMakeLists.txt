@@ -14,7 +14,7 @@ endif()
 set(SHARED_FLAGS "-O3 -Wall -fPIC -std=c++17")
 
 if (NOT MSVC)
-    set(SHARED_FLAGS "-Wextra -Wno-unused-parameter")
+    set(SHARED_FLAGS "${SHARED_FLAGS} -Wextra -Wno-unused-parameter")
 endif()
 
 set(CMAKE_CXX_FLAGS_DEBUG "${SHARED_FLAGS} -g3 -ggdb")
@@ -28,6 +28,6 @@ elseif (UNIX) # Linux
     set(CMAKE_DL_LIBS dl pthread c stdc++ stdc++fs)
 endif()
 
-add_library(Anium SHARED ${SRC})
+add_library(Anium SHARED ${SRC} src/sdk/definitions/GlowObjectDefinition.hpp)
 
 target_link_libraries(Anium ${CMAKE_DL_LIBS})

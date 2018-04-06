@@ -1,26 +1,27 @@
 #ifndef ANIUM_ICVAR_HPP
 #define ANIUM_ICVAR_HPP
 
-#include "../hooks/vfunc.hpp"
-#include "ConCommandBase.hpp"
-#include "Color.hpp"
+#include "../../hooks/vfunc.hpp"
+#include "../classes/ConCommandBase.hpp"
+#include "../classes/ConVar.hpp"
+#include "../miscellaneous/Color.hpp"
 
 class ICvar {
 public:
-    /*void RegisterConCommand(ConCommandBase* base) {
+    void RegisterConCommand(ConCommandBase* base) {
         typedef void (*oRegisterConCommand)(void*, ConCommandBase*);
         return VFunc(this, 10, 10, 10).GetFunction<oRegisterConCommand>()(this, base);
     }
 
-    void UnregisterConCommand(CVarDLLIdentifier_t identifier) {
-        typedef void (*oUnregisterConCommand)(void*, CVarDLLIdentifier_t);
+    void UnregisterConCommand(int identifier) {
+        typedef void (*oUnregisterConCommand)(void*, int);
         return VFunc(this, 12, 12, 12).GetFunction<oUnregisterConCommand>()(this, identifier);
     }
 
     ConVar* FindVar(const char* name) {
         typedef ConVar* (*oFindVar)(void*, const char*);
         return VFunc(this, 16, 15, 15).GetFunction<oFindVar>()(this, name);
-    }*/
+    }
 
     template <typename... V>
     void ConsoleColorPrintf(const Color& color, const char* format, V... values) {

@@ -14,8 +14,8 @@ struct DVariant {
         float vector[3];
         int64_t mInt64;
     };
-
     int type;
+
 };
 
 struct CRecvProxyData {
@@ -23,6 +23,7 @@ struct CRecvProxyData {
     DVariant value;
     int element;
     int objectID;
+
 };
 
 struct RecvTable {
@@ -32,6 +33,7 @@ struct RecvTable {
     char* netTableName;
     bool initialized;
     bool mainList;
+
 };
 
 typedef void (*RecvVarProxyFn)(const CRecvProxyData* pData, void* pStruct, void* pOut);
@@ -52,6 +54,7 @@ struct RecvProp {
     int elementStride;
     int elements;
     const char* parentName;
+
 };
 
 #endif  // ANIUM_RECV_HPP

@@ -39,7 +39,8 @@ private:
             }
         }
 
-        logger.log("Unable to find pattern in {}.", this->module.GetLibraryName().c_str());
+        logger.log("Unable to find pattern \"%s\" in %s.",
+                   this->signature.c_str(), this->module.GetLibraryName().c_str());
         return 0;
     }
 

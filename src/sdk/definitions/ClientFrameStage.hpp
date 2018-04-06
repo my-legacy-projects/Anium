@@ -1,8 +1,7 @@
 #ifndef ANIUM_CLIENTFRAMESTAGE_HPP
 #define ANIUM_CLIENTFRAMESTAGE_HPP
 
-enum class ClientFrameStage_t : int
-{
+enum class ClientFrameStage_t : int {
     FRAME_UNDEFINED = -1,
     FRAME_START,
     FRAME_NET_UPDATE_START,
@@ -11,6 +10,7 @@ enum class ClientFrameStage_t : int
     FRAME_NET_UPDATE_END,
     FRAME_RENDER_START,
     FRAME_RENDER_END
+
 };
 
 #endif  // ANIUM_CLIENTFRAMESTAGE_HPP
