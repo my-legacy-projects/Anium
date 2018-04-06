@@ -2,14 +2,14 @@
 
 #if defined(_WIN32)
     Logger logger("Anium");
-    HMODULE aniumModule = nullptr;
+    void* aniumModule = nullptr;
     bool aniumActive = false;
 #elif defined(__APPLE__) || defined(__linux__)
     // Global logger should be initialized with highest priority so we can start logging directly and early
     Logger __attribute__((init_priority(101))) logger("Anium");
 #endif
 
-int Anium::Init(HMODULE self) {
+int Anium::Init(void* self) {
     std::thread aniumThread([&]() -> void {
         #if defined(_WIN32)
             aniumModule = self; // May be nullptr but we check for that in Anium::Exit()
@@ -34,7 +34,7 @@ int Anium::Init(HMODULE self) {
         while (aniumActive)
             std::this_thread::sleep_for(std::chrono::seconds(1));
 
-        FreeLibraryAndExitThread(aniumModule, EXIT_SUCCESS);
+        FreeLibraryAndExitThread((HMODULE) aniumModule, EXIT_SUCCESS);
     #elif defined(__APPLE__) || defined(__linux__)
         return EXIT_SUCCESS;
     #endif
@@ -60,7 +60,7 @@ void Anium::Exit() {
             return;
         }
 
-        FreeLibraryAndExitThread(aniumModule, EXIT_SUCCESS);
+        FreeLibraryAndExitThread((HMODULE) aniumModule, EXIT_SUCCESS);
     #elif defined(__APPLE__) || defined(__linux__)
         Dl_info dlInfo;
 
@@ -79,10 +79,10 @@ void Anium::Exit() {
 
 #if defined(_WIN32)
 
-bool __stdcall DllMain(HMODULE module, DWORD reason, LPVOID reserved) {
+bool __stdcall DllMain(void* module, unsigned long reason, void* reserved) {
     switch (reason) {
         case DLL_PROCESS_ATTACH:
-            DisableThreadLibraryCalls(module);
+            DisableThreadLibraryCalls((HMODULE) module);
             return CreateThread(nullptr, 0, (LPTHREAD_START_ROUTINE) Anium::Init, module, 0, nullptr) != nullptr;
         case DLL_PROCESS_DETACH:
             if (reserved == nullptr) {

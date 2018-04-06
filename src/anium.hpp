@@ -18,17 +18,16 @@
     #define __thiscall
     #define __stdcall
     #define __cdecl
-    #define HMODULE void*
 #endif
 
 #if defined(_WIN32)
-    extern HMODULE aniumModule;
+    extern void* aniumModule;
     extern bool aniumActive;
 #endif
 
 namespace Anium {
 
-    int Init(HMODULE self = nullptr);
+    int Init(void* self = nullptr);
 
     int Destroy();
 
