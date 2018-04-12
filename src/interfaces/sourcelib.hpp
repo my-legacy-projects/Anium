@@ -27,7 +27,7 @@
     #include <dlfcn.h>
 #endif
 
-typedef void* (*InstantiateInterfaceFn)();
+using InstantiateInterfaceFn = void* (*)();
 
 struct InterfaceReg {
 
@@ -133,7 +133,7 @@ public:
                 return this->GrabInterface<T>(target);
             }
 
-            typedef void* (*CreateInterfaceFn)(const char*, int*);
+            using CreateInterfaceFn = void* (*)(const char*, int*);
             CreateInterfaceFn func = (CreateInterfaceFn) GetProcAddress(
                 GetModuleHandleA(this->module.c_str()), "CreateInterface"
             );

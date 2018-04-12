@@ -8,8 +8,8 @@
 
 class IClientNetworkable;
 
-typedef IClientNetworkable* (*CreateClientClassFn)(int entity, int serial);
-typedef IClientNetworkable* (*CreateEventFn)();
+using CreateClientClassFn = IClientNetworkable* (*)(int, int);
+using CreateEventFn = IClientNetworkable* (*)();
 
 class ClientClass {
 public:
@@ -25,7 +25,7 @@ public:
 class IBaseClientDLL {
 public:
     ClientClass* GetAllClasses() {
-        typedef ClientClass* (*oGetAllClasses)(void*);
+        using oGetAllClasses = ClientClass* (*)(void*);
         return VFunc(this, 8, 8, 8).GetFunction<oGetAllClasses>()(this);
     }
 

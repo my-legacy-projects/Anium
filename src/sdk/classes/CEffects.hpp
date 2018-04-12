@@ -8,7 +8,7 @@
 class CEffects {
 public:
     dlight AllocateDlight(int key) {
-        typedef dlight (*oAllocateDlight)(void*, int);
+        using oAllocateDlight = dlight (*)(void*, int);
         return VFunc(this, 4, 4, 4).GetFunction<oAllocateDlight>()(this, key);
     }
 

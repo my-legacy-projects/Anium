@@ -56,12 +56,12 @@ private:
 
 public:
     float GetFloat() {
-        typedef float (*oGetFloat)(void*);
+        using oGetFloat = float (*)(void*);
         return VFunc(this, 12, 15, 15).GetFunction<oGetFloat>()(this);
     }
 
     int GetInt() {
-        typedef int (*oGetInt)(void*);
+        using oGetInt = int (*)(void*);
         return VFunc(this, 13, 16, 16).GetFunction<oGetInt>()(this);
     }
 
@@ -75,17 +75,17 @@ public:
     }
 
     void SetValue(const char* value) {
-        typedef void (*oSetValue)(void*, const char*);
+        using oSetValue = void (*)(void*, const char*);
         VFunc(this, 14, 17, 17).GetFunction<oSetValue>()(this, value);
     }
 
     void SetValue(float value) {
-        typedef void (*oSetValue)(void*, float);
+        using oSetValue = void (*)(void*, float);
         VFunc(this, 15, 18, 18).GetFunction<oSetValue>()(this, value);
     }
 
     void SetValue(int value) {
-        typedef void (*oSetValue)(void*, int);
+        using oSetValue = void (*)(void*, int);
         VFunc(this, 16, 19, 19).GetFunction<oSetValue>()(this, value);
     }
 

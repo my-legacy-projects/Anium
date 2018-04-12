@@ -36,7 +36,7 @@ struct RecvTable {
 
 };
 
-typedef void (*RecvVarProxyFn)(const CRecvProxyData* pData, void* pStruct, void* pOut);
+using RecvVarProxyFn = void (*)(const CRecvProxyData*, void*, void*);
 
 struct RecvProp {
     char* name;

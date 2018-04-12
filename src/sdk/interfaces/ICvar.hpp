@@ -9,29 +9,29 @@
 class ICvar {
 public:
     void RegisterConCommand(ConCommandBase* base) {
-        typedef void (*oRegisterConCommand)(void*, ConCommandBase*);
+        using oRegisterConCommand = void (*)(void*, ConCommandBase*);
         return VFunc(this, 10, 10, 10).GetFunction<oRegisterConCommand>()(this, base);
     }
 
     void UnregisterConCommand(int identifier) {
-        typedef void (*oUnregisterConCommand)(void*, int);
+        using oUnregisterConCommand = void (*)(void*, int);
         return VFunc(this, 12, 12, 12).GetFunction<oUnregisterConCommand>()(this, identifier);
     }
 
     ConVar* FindVar(const char* name) {
-        typedef ConVar* (*oFindVar)(void*, const char*);
+        using oFindVar = ConVar* (*)(void*, const char*);
         return VFunc(this, 16, 15, 15).GetFunction<oFindVar>()(this, name);
     }
 
     template <typename... V>
     void ConsoleColorPrintf(const Color& color, const char* format, V... values) {
-        typedef void (*oConsoleColorPrintf)(void*, const Color&, const char*, ...);
+        using oConsoleColorPrintf = void (*)(void*, const Color&, const char*, ...);
         return VFunc(this, 25, 25, 25).GetFunction<oConsoleColorPrintf>()(this, color, format, values...);
     }
 
     template <typename... V>
     void ConsoleDPrintf(const char* format, V... values) {
-        typedef void (*oConsoleDPrintf)(void*, const char* format, ...);
+        using oConsoleDPrintf = void (*)(void*, const char* format, ...);
         return VFunc(this, 27, 27, 27).GetFunction<oConsoleDPrintf>()(this, format, values...);
     }
 

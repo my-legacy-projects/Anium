@@ -18,12 +18,12 @@ public:
     virtual ~IClientRenderable() {};
 
     model* GetModel() {
-        typedef model* (*oGetModel)(void*);
+        using oGetModel = model* (*)(void*);
         return VFunc(this, 8, 8, 8).GetFunction<oGetModel>()(this);
     }
 
     bool SetupBones(matrix3x4* boneMatrix, int max, int mask, float time = 0) {
-        typedef bool (*oSetupBones)(void*, matrix3x4*, int, int, float);
+        using oSetupBones = bool (*)(void*, matrix3x4*, int, int, float);
         return VFunc(this, 13, 13, 13).GetFunction<oSetupBones>()(this, boneMatrix, max, mask, time);
     }
 
@@ -34,32 +34,32 @@ public:
     virtual ~IClientNetworkable() {};
 
     void Release() {
-        typedef void (*oRelease)(void*);
+        using oRelease = void (*)(void*);
         VFunc(this, 1, 1, 1).GetFunction<oRelease>()(this);
     }
 
     ClientClass* GetClientClass() {
-        typedef ClientClass* (*oGetClientClass)(void*);
+        using oGetClientClass = ClientClass* (*)(void*);
         return VFunc(this, 2, 2, 2).GetFunction<oGetClientClass>()(this);
     }
 
     void PreDataUpdate(DataUpdateType type) {
-        typedef void (*oPreDataUpdate)(void*, DataUpdateType);
+        using oPreDataUpdate = void (*)(void*, DataUpdateType);
         VFunc(this, 6, 6, 6).GetFunction<oPreDataUpdate>()(this, type);
     }
 
     bool IsDormant() {
-        typedef bool (*oIsDormant)(void*);
+        using oIsDormant = bool (*)(void*);
         return VFunc(this, 8, 9, 9).GetFunction<oIsDormant>()(this);
     }
 
     int GetIndex() {
-        typedef int (*oGetIndex)(void*);
+        using oGetIndex = int (*)(void*);
         return VFunc(this, 9, 10, 10).GetFunction<oGetIndex>()(this);
     }
 
     void SetDestroyedOnRecreateEntities() {
-        typedef void (*oSetDestroyedOnRecreateEntities)(void*);
+        using oSetDestroyedOnRecreateEntities = void (*)(void*);
         VFunc(this, 12, 13, 13).GetFunction<oSetDestroyedOnRecreateEntities>()(this);
     }
 
