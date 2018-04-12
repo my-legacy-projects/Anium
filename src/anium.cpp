@@ -32,7 +32,7 @@ int Anium::Init(void* self) {
 
     #if defined(_WIN32)
         while (aniumActive)
-            std::this_thread::sleep_for(std::chrono::seconds(1));
+            std::this_thread::yield();
 
         FreeLibraryAndExitThread((HMODULE) aniumModule, EXIT_SUCCESS);
     #elif defined(__APPLE__) || defined(__linux__)
@@ -71,9 +71,25 @@ void Anium::Exit() {
 
         void* handle = dlopen(dlInfo.dli_fname, RTLD_NOW | RTLD_NOLOAD);
 
+        if (handle == nullptr) {
+            // For whatever reason, we found ourselves but couldn't open ourselves
+            // How does this even happen, who's fault is this? Can we even recover from this?
+            // Somebody save this program. Somebody save me from my depression.
+            Anium::Destroy();
+            return;
+        }
+
+        logger.log("Anium has been loaded as %s.", dlInfo.dli_fname);
+
         dlclose(handle);
         dlclose(handle);
         dlclose(handle);
+
+        // This code won't be executed if unloading was successful
+        logger.log("Anium was unable to unload itself.");
+        logger.log("%s", dlerror());
+
+        Anium::Destroy();
     #endif
 }
 

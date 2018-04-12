@@ -17,6 +17,12 @@ if (NOT MSVC)
     set(SHARED_FLAGS "${SHARED_FLAGS} -Wextra -Wno-unused-parameter")
 endif()
 
+if (CMAKE_COMPILER_IS_GNUCXX)
+    # Prevents generation of STB_GNU_UNIQUE symbols which prevent unloading using dlclose
+    # https://stackoverflow.com/a/39123106/7360990
+    set(SHARED_FLAGS "${SHARED_FLAGS} --no-gnu-unique")
+endif()
+
 set(CMAKE_CXX_FLAGS_DEBUG "${SHARED_FLAGS} -g3 -ggdb")
 set(CMAKE_CXX_FLAGS_RELEASE "${SHARED_FLAGS}")
 
@@ -28,6 +34,6 @@ elseif (UNIX) # Linux
     set(CMAKE_DL_LIBS dl pthread c stdc++ stdc++fs)
 endif()
 
-add_library(Anium SHARED ${SRC} src/sdk/definitions/GlowObjectDefinition.hpp)
+add_library(Anium SHARED ${SRC})
 
 target_link_libraries(Anium ${CMAKE_DL_LIBS})
