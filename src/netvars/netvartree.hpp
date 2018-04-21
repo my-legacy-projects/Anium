@@ -14,10 +14,8 @@ struct TreeNode; // Pre-declare TreeNode
 using Tree = std::vector<std::pair<std::string, TreeNode*>>;
 
 struct TreeNode {
-
     Tree children;
     RecvProp* prop;
-
 };
 
 class NetVarTree {
@@ -56,7 +54,7 @@ public:
         for (std::string name : tables) {
             Tree oldNodes = nodes;
 
-            for (std::pair<std::string, TreeNode*> &node : nodes) {
+            for (std::pair<std::string, TreeNode*>& node : nodes) {
                 if (node.first.find(name) != std::string::npos) {
                     nodes = node.second->children;
 

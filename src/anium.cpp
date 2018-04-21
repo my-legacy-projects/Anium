@@ -1,3 +1,4 @@
+#include <dlfcn.h>
 #include "anium.hpp"
 
 #if defined(_WIN32)
@@ -14,6 +15,14 @@ int Anium::Init(void* self) {
         #if defined(_WIN32)
             aniumModule = self; // May be nullptr but we check for that in Anium::Exit()
             aniumActive = true;
+        #elif defined(__APPLE__) || defined(__linux__)
+            Dl_info dlInfo;
+
+            if (dladdr((void*) Anium::Init, &dlInfo) != 0) {
+                logger.log("Found ourselves in %s, assigning module handle.", dlInfo.dli_fname);
+            } else {
+                logger.log("Unable to found ourselves. No module handle assigned.");
+            }
         #endif
 
         Interfaces::Find(); // This method will block and wait until it finds all the interfaces.
@@ -27,6 +36,7 @@ int Anium::Init(void* self) {
         srand((unsigned int) time(nullptr)); // Seed random number generator with current time
 
         logger.log("Welcome to Anium on %s.", Platforms::GetPlatformName().c_str());
+        logger.log("Module has been created on %s at %s.", __DATE__, __TIME__);
     });
     aniumThread.detach();
 
@@ -86,8 +96,8 @@ void Anium::Exit() {
         dlclose(handle);
 
         // This code won't be executed if unloading was successful
-        logger.log("Anium was unable to unload itself.");
-        logger.log("%s", dlerror());
+        logger.log("Anium was unable to unload itself, unloading forcefully.");
+        logger.log("Error: %s", dlerror());
 
         Anium::Destroy();
     #endif
