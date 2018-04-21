@@ -1,4 +1,3 @@
-#include <dlfcn.h>
 #include "anium.hpp"
 
 #if defined(_WIN32)
