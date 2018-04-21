@@ -10,7 +10,11 @@
 
 namespace Hooks {
 
-    void FrameStageNotify(ClientFrameStage_t stage);
+    #if defined(_WIN32)
+        void __stdcall FrameStageNotify(ClientFrameStage_t stage);
+    #elif defined(__APPLE__) || defined(__linux__)
+        void FrameStageNotify(void*, ClientFrameStage_t stage);
+    #endif
 
 }
 
