@@ -29,15 +29,15 @@ fi
 
 # Parse Anium.log into finding our library name
 log=$(head -n 1 /tmp/Anium.log)
-no_prefix=${log:33}
 
-if [[ "$no_prefix" == Unable* ]]; then
+if [[ "$log" == *"Unable"* ]]; then
     echo -e "\e[91mAnium was unable to find itself, detaching is impossible without closing the game.\e[39m"
     exit -1
 fi
 
-handle=${log:51}
-handle=(${handle//,/ })
+begin_index=$(echo ${log} | grep -b -o "/usr/" | awk 'BEGIN {FS=":"}{print $1}')
+end_index=$(echo ${log} | grep -b -o "," | awk 'BEGIN {FS=":"}{print $1}')
+handle=${log:${begin_index}:${end_index} - ${begin_index}}
 
 echo "Anium was attached as $handle."
 
