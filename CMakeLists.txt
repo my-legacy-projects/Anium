@@ -13,18 +13,19 @@ endif()
 
 set(CMAKE_CXX_FLAGS "-O3 -Wall -fPIC -std=c++17")
 
-if (NOT MSVC)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Wno-unused-parameter")
-endif()
-
 if (CMAKE_COMPILER_IS_GNUCXX)
     # Prevents generation of STB_GNU_UNIQUE symbols which prevent unloading using dlclose
     # https://stackoverflow.com/a/39123106/7360990
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --no-gnu-unique")
 endif()
 
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -D_DEBUG -g3 -ggdb")
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -s")
+if (NOT MSVC)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Wno-unused-parameter")
+    set(CMAKE_CXX_FLAGS_DEBUG "-D_DEBUG")
+endif()
+
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${CMAKE_CXX_FLAGS} -g3 -ggdb")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} ${CMAKE_CXX_FLAGS} -s")
 
 if (WIN32)
     set(CMAKE_DL_LIBS)
