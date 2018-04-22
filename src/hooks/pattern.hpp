@@ -14,11 +14,11 @@ private:
     std::string signature;
 
     // Credit: https://github.com/learn-more/findpattern-bench/blob/master/patterns/learn_more.h
-    uintptr_t FindPattern(const uintptr_t& start, const uintptr_t& end) {
+    uintptr_t FindPattern(const uintptr_t& start, const uintptr_t& size) {
         const char* pattern = this->signature.c_str();
         uintptr_t firstMatch = 0;
 
-        for (uintptr_t pos = start; pos < end; pos++) {
+        for (uintptr_t pos = start; pos < (start + size); pos++) {
             if (*pattern == 0)
                 return firstMatch;
 
@@ -29,8 +29,11 @@ private:
                 if (firstMatch == 0)
                     firstMatch = pos;
 
-                if (pattern[2] == 0)
+                if (pattern[2] == 0) {
+                    logger.log("Found pattern \"%s\" in %s at 0x%08X.",
+                               this->signature.c_str(), this->module.GetModuleName().c_str(), &firstMatch);
                     return firstMatch;
+                }
 
                 pattern += currentPattern != '\?' ? 3 : 2;
             } else {
@@ -40,7 +43,7 @@ private:
         }
 
         logger.log("Unable to find pattern \"%s\" in %s.",
-                   this->signature.c_str(), this->module.GetLibraryName().c_str());
+                   this->signature.c_str(), this->module.GetModuleName().c_str());
         return 0;
     }
 
@@ -57,7 +60,7 @@ public:
         #endif
     }
 
-    uintptr_t Find() {
+    uintptr_t Find(int _win = 0, int _mac = 0, int _linux = 0) {
         if (this->module.GetAddress() == 0 || this->module.GetSize() == 0) {
             logger.log("The address or size of the SourceLib weren't initialized before trying"
                        "to scan for a pattern in it.");
@@ -65,7 +68,15 @@ public:
             return 0;
         }
 
-        return FindPattern(this->module.GetAddress(), this->module.GetSize());
+        #if defined(_WIN32)
+            int offset = _win;
+        #elif defined(__APPLE__)
+            int offset = _mac;
+        #elif defined(__linux__)
+            int offset = _linux;
+        #endif
+
+        return FindPattern(this->module.GetAddress(), this->module.GetSize()) + offset;
     }
 
 };

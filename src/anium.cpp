@@ -32,6 +32,8 @@ int Anium::Init(void* self) {
 
         NetVar::InitAll();
 
+        Hooker::Init();
+
         srand((unsigned int) time(nullptr)); // Seed random number generator with current time
 
         logger.log("Welcome to Anium on %s.", Platforms::GetPlatformName().c_str());

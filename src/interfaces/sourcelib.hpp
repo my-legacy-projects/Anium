@@ -166,6 +166,10 @@ public:
         return this->name;
     }
 
+    std::string GetModuleName() {
+        return this->module;
+    }
+
     uintptr_t GetAddress() {
         return this->address;
     }
