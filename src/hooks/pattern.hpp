@@ -60,12 +60,13 @@ public:
         #endif
     }
 
-    uintptr_t Find(int _win = 0, int _mac = 0, int _linux = 0) {
+    template <typename T>
+    T Find(int _win = 0, int _mac = 0, int _linux = 0) {
         if (this->module.GetAddress() == 0 || this->module.GetSize() == 0) {
             logger.log("The address or size of the SourceLib weren't initialized before trying"
                        "to scan for a pattern in it.");
 
-            return 0;
+            return nullptr;
         }
 
         #if defined(_WIN32)
@@ -76,7 +77,7 @@ public:
             int offset = _linux;
         #endif
 
-        return FindPattern(this->module.GetAddress(), this->module.GetSize()) + offset;
+        return reinterpret_cast<T>(FindPattern(this->module.GetAddress(), this->module.GetSize()) + offset);
     }
 
 };

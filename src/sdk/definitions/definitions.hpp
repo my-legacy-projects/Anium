@@ -6,5 +6,6 @@
 #include "EClassIds.hpp"
 #include "Matrix.hpp"
 #include "Model.hpp"
+#include "PaintMode.hpp"
 
 #endif  // ANIUM_DEFINITIONS_HPP

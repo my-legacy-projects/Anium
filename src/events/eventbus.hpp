@@ -5,7 +5,7 @@
 #include "bus.hpp"
 #include "event.hpp"
 
-extern eventpp::Bus<FrameStageNotifyEvent> eventBus;
+extern eventpp::Bus<FrameStageNotifyEvent, PaintEvent> eventBus;
 
 namespace EventBus {
 

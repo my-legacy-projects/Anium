@@ -3,10 +3,12 @@
 
 #include "vmthook.hpp"
 #include "impl/framestagenotify.hpp"
+#include "impl/paint.hpp"
 #include "../hooks/pattern.hpp"
 #include "../interfaces/interfaces.hpp"
 
 extern VMTHook* clientVMT;
+extern VMTHook* engineVGuiVMT;
 
 namespace VMT {
 

@@ -1,6 +1,6 @@
 #include "eventbus.hpp"
 
-eventpp::Bus<FrameStageNotifyEvent> eventBus = eventpp::Bus<FrameStageNotifyEvent>();
+eventpp::Bus<FrameStageNotifyEvent, PaintEvent> eventBus = eventpp::Bus<FrameStageNotifyEvent, PaintEvent>();
 
 void EventBus::Init() {
 

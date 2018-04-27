@@ -114,6 +114,8 @@ public:
                 if (name.find(((SourceLib*) self)->module) != std::string::npos) {
                     ((SourceLib*) self)->address = info->dlpi_addr + info->dlpi_phdr[0].p_vaddr;
                     ((SourceLib*) self)->size = info->dlpi_phdr[0].p_memsz;
+
+                    return 1;
                 }
 
                 return 0;
