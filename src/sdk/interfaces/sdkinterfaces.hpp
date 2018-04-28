@@ -4,5 +4,7 @@
 #include "IBaseClientDLL.hpp"
 #include "IClientEntity.hpp"
 #include "ICvar.hpp"
+#include "IEngineVGui.hpp"
+#include "ISurface.hpp"
 
 #endif  // ANIUM_SDKINTERFACES_HPP
