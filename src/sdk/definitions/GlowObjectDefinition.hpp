@@ -6,15 +6,15 @@ struct GlowObjectDefinition {
     float color[3];
     float alpha;
     char _pad0[4];
-    float _unknown0; // ???
+    float _pad1;
     float bloomAmount;
     float zeroPoint;
     bool renderOccluded;
     bool renderUnoccluded;
     bool renderFullBloom;
-    char _pad1[1];
+    char _pad2[1];
     int fullBloomStencilTestValue;
-    int _unknown1; // ???
+    int _pad3;
     int splitScreenSlot;
     int nextFreeSlot;
 

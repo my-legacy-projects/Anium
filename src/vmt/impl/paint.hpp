@@ -1,7 +1,7 @@
 #ifndef ANIUM_PAINT_HPP
 #define ANIUM_PAINT_HPP
 
-#include "../../sdk/definitions/definitions.hpp"
+#include "../../sdk/definitions/PaintMode.hpp"
 #include "../../events/impl/paintevent.hpp"
 #include "../../events/eventbus.hpp"
 #include "../../utils/logging.hpp"

@@ -1,7 +1,7 @@
 #ifndef ANIUM_FRAMESTAGENOTIFYEVENT_HPP
 #define ANIUM_FRAMESTAGENOTIFYEVENT_HPP
 
-#include "../../sdk/definitions/definitions.hpp"
+#include "../../sdk/definitions/ClientFrameStage.hpp"
 #include "../event.hpp"
 
 struct FrameStageNotifyEvent : public eventpp::Event<FrameStageNotifyEvent> {
