@@ -6,7 +6,7 @@ void __stdcall Hooks::Paint(PaintMode mode) {
 void Hooks::Paint(void*, PaintMode mode) {
 #endif
     using oPaint = void (__thiscall*)(void*, PaintMode);
-    engineVGuiVMT->GetOriginal<oPaint>(15, 14, 14)(engineVGui, mode);
+    engineVGuiVMT->GetOriginal<oPaint>(14, 15, 15)(engineVGui, mode);
 
     if (mode & PaintMode::PAINT_UIPANELS) {
         #if !defined(__APPLE__)

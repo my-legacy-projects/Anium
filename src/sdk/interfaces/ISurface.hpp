@@ -4,12 +4,6 @@
 #include "../../hooks/vfunc.hpp"
 #include "../miscellaneous/Color.hpp"
 
-// WinAPI defines these methods as macros so let's undefine them
-#if defined(_WIN32)
-    #undef CreateFont
-    #undef DrawText
-#endif
-
 class ISurface {
 public:
     void SetDrawColor(Color color) {

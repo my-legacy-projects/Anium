@@ -38,6 +38,12 @@ fi
 begin_index=$(echo ${log} | grep -b -o "/usr/" | awk 'BEGIN {FS=":"}{print $1}')
 end_index=$(echo ${log} | grep -b -o "," | awk 'BEGIN {FS=":"}{print $1}')
 handle=${log:${begin_index}:${end_index} - ${begin_index}}
+fixed=${handle/lib64/lib}
+
+if ! grep -q "$fixed" /proc/${pid}/maps; then
+    echo -e "\e[91mAnium needs to be attached before being detached.\e[39m"
+    exit -1
+fi
 
 echo "Anium was attached as $handle."
 

@@ -12,6 +12,11 @@
 
 #if defined(_WIN32)
     #include <Windows.h>
+
+    // CreateFont and DrawText are defined by WinAPI
+    // Our ISurface uses these methods, so let's undefine them so we can use them with ISurface
+    #undef CreateFont
+    #undef DrawText
 #elif defined(__linux__) || defined(__APPLE__)
     // Define Windows-only calling convention to default to nothing on *nix
     #define __fastcall
