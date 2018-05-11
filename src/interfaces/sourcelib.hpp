@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string>
 #include <thread>
+#include "../sdk/definitions/InterfaceReg.hpp"
 
 #if defined(_WIN32)
     #include <Windows.h>
@@ -26,16 +27,6 @@
 #if defined(__APPLE__) || defined(__linux__)
     #include <dlfcn.h>
 #endif
-
-using InstantiateInterfaceFn = void* (*)();
-
-struct InterfaceReg {
-
-    InstantiateInterfaceFn m_CreateFn;
-    const char* m_pName;
-    InterfaceReg* m_pNext;
-
-};
 
 class SourceLib {
 private:
@@ -152,9 +143,9 @@ public:
                 return this->GrabInterface<T>(target);
             }
 
-            for (InterfaceReg* current = this->reg; current != nullptr; current = current->m_pNext) {
-                if (target.find(current->m_pName) != std::string::npos) {
-                    T* interface = reinterpret_cast<T*>(current->m_CreateFn());
+            for (InterfaceReg* current = this->reg; current != nullptr; current = current->next) {
+                if (target.find(current->name) != std::string::npos) {
+                    T* interface = reinterpret_cast<T*>(current->create());
 
                     return interface;
                 }
