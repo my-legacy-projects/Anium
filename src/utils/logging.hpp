@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <ctime>
 #include <fstream>
+#include <iomanip>
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -14,12 +15,15 @@
 class Logger {
 private:
     std::string name;
+    std::time_t time;
     bool withTime;
     std::ofstream stream;
 
 public:
     explicit Logger(const std::string& name, bool time = true) {
         this->name = std::move(name);
+
+        this->time = std::time(nullptr);
         this->withTime = time;
 
         this->stream.open(io::GetTempDirectory() + io::GetPathSeparator() + this->name + ".log");
@@ -31,22 +35,10 @@ public:
     }
 
     void log(std::string message, ...) {
-        std::string currentTime = []() -> std::string {
-            struct tm timeStruct;
-            char buffer[80];
-
-            time_t now = time(nullptr);
-            timeStruct = *localtime(&now);
-
-            strftime(buffer, sizeof(buffer), "%d.%m.%Y %X", &timeStruct);
-
-            return std::string(buffer);
-        }();
-
         std::stringstream stream("");
 
         if (this->withTime)
-            stream << currentTime;
+            stream << std::put_time(std::localtime(&this->time), "%d.%m.%Y %X");
 
         char buffer[512]; // If you print over 512 chars go to hell
         va_list varargs;
@@ -58,7 +50,8 @@ public:
 
         if (cvar != nullptr) {
             std::stringstream engineConsole("");
-            engineConsole << " - " << currentTime << " - " << buffer << std::endl;
+            engineConsole << " - " << std::put_time(std::localtime(&this->time), "%d.%m.%Y %X")
+                          << " - " << buffer << std::endl;
 
             cvar->ConsoleColorPrintf(Color(255, 169, 10), "Anium");
             cvar->ConsoleColorPrintf(Color(255, 255, 255), engineConsole.str().c_str());
