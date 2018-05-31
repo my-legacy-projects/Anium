@@ -24,6 +24,8 @@ int Anium::Init(void* self) {
             }
         #endif
 
+        std::setlocale(LC_ALL, "en_US.UTF-8");
+
         Interfaces::Find(); // This method will block and wait until it finds all the interfaces.
 
         VMT::Init();
@@ -34,7 +36,7 @@ int Anium::Init(void* self) {
 
         Hooker::Init();
 
-        srand((unsigned int) time(nullptr)); // Seed random number generator with current time
+        std::srand((unsigned int) std::time(nullptr));
 
         logger.log("Welcome to Anium on %s.", Platforms::GetPlatformName().c_str());
         logger.log("Module has been created on %s at %s.", __DATE__, __TIME__);

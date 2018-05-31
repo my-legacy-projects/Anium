@@ -38,8 +38,9 @@ victim_lib_array[-1]="$number_to_spoof"
 library_path=$(IFS=. ; echo "${victim_lib_array[*]}")
 
 if [ -e "$library_path" ]; then
-    echo -e "\e[91mA error occurred. Please retry.\e[39m"
-    exit -1
+    echo -e "\e[91mSpoofed library exists, retrying...\e[39m"
+    ./attach.sh ${pid}
+    exit 0
 else
     sudo cp "bin/libAnium.so" "$library_path"
 
@@ -66,7 +67,6 @@ sudo killall -19 steam
 sudo killall -19 steamwebhelper
 
 # Uses dlmopen instead of normal dlopen - Credit to LWSS
-input="$(
 sudo gdb -n -q -batch \
   -ex "set logging on" \
   -ex "set logging file /dev/null" \
@@ -83,8 +83,8 @@ sudo gdb -n -q -batch \
   -ex "set \$error = call dlerror()" \
   -ex "x/s \$error" \
   -ex "detach" \
-  -ex "quit"
-)"
+  -ex "quit" \
+  >/dev/null
 
 # Resume Steam
 sleep 1
