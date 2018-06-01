@@ -22,7 +22,7 @@ private:
 
     static inline NetVarTree tree;
 
-    void Init() {
+    void Find() {
         this->offset = this->tree.FindOffset(this->tables);
     }
 
@@ -35,11 +35,11 @@ public:
         head = this;
     }
 
-    static void InitAll() {
+    static void Init() {
         tree.Init();
 
         for (NetVar* netvar = head; netvar != nullptr; netvar = netvar->next) {
-            netvar->Init();
+            netvar->Find();
         }
     }
 

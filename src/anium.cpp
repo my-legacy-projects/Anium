@@ -26,13 +26,13 @@ int Anium::Init(void* self) {
 
         std::setlocale(LC_ALL, "en_US.UTF-8");
 
-        Interfaces::Find(); // This method will block and wait until it finds all the interfaces.
+        Interfaces::Find(); // This method will block until it finds all the interfaces
 
         VMT::Init();
 
         EventBus::Init();
 
-        NetVar::InitAll();
+        NetVar::Init();
 
         Hooker::Init();
 
@@ -115,7 +115,7 @@ bool __stdcall DllMain(void* module, unsigned long reason, void* reserved) {
             return CreateThread(nullptr, 0, (LPTHREAD_START_ROUTINE) Anium::Init, module, 0, nullptr) != nullptr;
         case DLL_PROCESS_DETACH:
             if (reserved == nullptr) {
-                return !((bool) Anium::Destroy());
+                return Anium::Destroy() == EXIT_SUCCESS;
             }
             break;
     }
