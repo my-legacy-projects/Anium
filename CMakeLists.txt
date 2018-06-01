@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.9)
-project(Anium)
+project(Anium CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ./bin)
@@ -13,19 +13,30 @@ endif()
 
 set(CMAKE_CXX_FLAGS "-O3 -Wall -fPIC -std=c++17")
 
-if (CMAKE_COMPILER_IS_GNUCXX)
+if (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
     # Prevents generation of STB_GNU_UNIQUE symbols which prevent unloading using dlclose
     # https://stackoverflow.com/a/39123106/7360990
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --no-gnu-unique")
+
+    # Strip symbols from release builds
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -s")
 endif()
 
-if (NOT MSVC)
+if (NOT CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Wno-unused-parameter")
-    set(CMAKE_CXX_FLAGS_DEBUG "-D_DEBUG")
+
+    # Define MSVC debug macro for non MSVC and hide symbols by default on release builds
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -fvisibility=hidden")
+endif()
+
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    # Source SDK headers contain tons of unused private fields, disable warning for those
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-private-field")
 endif()
 
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${CMAKE_CXX_FLAGS} -g3 -ggdb")
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} ${CMAKE_CXX_FLAGS} -s")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} ${CMAKE_CXX_FLAGS}")
 
 if (WIN32)
     set(CMAKE_DL_LIBS)
@@ -36,5 +47,4 @@ elseif (UNIX) # Linux
 endif()
 
 add_library(Anium SHARED ${SRC})
-
 target_link_libraries(Anium ${CMAKE_DL_LIBS})
