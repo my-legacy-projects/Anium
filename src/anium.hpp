@@ -1,6 +1,7 @@
 #ifndef ANIUM_ANIUM_HPP
 #define ANIUM_ANIUM_HPP
 
+#include <clocale>
 #include <cstdlib>
 #include <thread>
 #include "events/eventbus.hpp"
@@ -11,6 +12,7 @@
 #include "vmt/vmt.hpp"
 
 #if defined(_WIN32)
+    #define WIN32_LEAN_AND_MEAN
     #include <Windows.h>
 
     // CreateFont and DrawText are defined by WinAPI
