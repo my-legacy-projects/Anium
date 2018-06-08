@@ -30,8 +30,6 @@ int Anium::Init(void* self) {
 
         VMT::Init();
 
-        EventBus::Init();
-
         NetVar::Init();
 
         Hooker::Init();
@@ -114,9 +112,9 @@ bool __stdcall DllMain(void* module, unsigned long reason, void* reserved) {
             DisableThreadLibraryCalls((HMODULE) module);
             return CreateThread(nullptr, 0, (LPTHREAD_START_ROUTINE) Anium::Init, module, 0, nullptr) != nullptr;
         case DLL_PROCESS_DETACH:
-            if (reserved == nullptr) {
+            if (reserved == nullptr)
                 return Anium::Destroy() == EXIT_SUCCESS;
-            }
+
             break;
     }
 

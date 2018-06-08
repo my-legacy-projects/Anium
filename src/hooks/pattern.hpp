@@ -2,11 +2,8 @@
 #define ANIUM_PATTERN_HPP
 
 #include "../interfaces/interfaces.hpp"
+#include "../utils/hex.hpp"
 #include "../utils/logging.hpp"
-
-#define INRANGE(x, a, b) ((x) >= (a) && (x) <= (b))
-#define getBits(x) (INRANGE(x, '0', '9') ? ((x) - '0') : (((x) & (~0x20)) - 'A' + 0xa))
-#define getByte(x) (getBits((x)[0]) << 4 | getBits((x)[1]))
 
 class Pattern {
 private:
@@ -14,18 +11,21 @@ private:
     std::string signature;
 
     // Credit: https://github.com/learn-more/findpattern-bench/blob/master/patterns/learn_more.h
-    uintptr_t FindPattern(const uintptr_t& start, const uintptr_t& size) {
+    uintptr_t FindPattern() {
         const char* pattern = this->signature.c_str();
         uintptr_t firstMatch = 0;
 
-        for (uintptr_t pos = start; pos < (start + size); pos++) {
+        uintptr_t start = this->module.GetAddress();
+        uintptr_t end = start + this->module.GetSize();
+
+        for (uintptr_t pos = start; pos < end; pos++) {
             if (*pattern == 0)
                 return firstMatch;
 
             const uint8_t currentPattern = *reinterpret_cast<const uint8_t*>(pattern);
             const uint8_t currentMemory = *reinterpret_cast<const uint8_t*>(pos);
 
-            if (currentPattern == '\?' || currentMemory == getByte(pattern)) {
+            if (currentPattern == '\?' || currentMemory == Hex::GetBytes(pattern)) {
                 if (firstMatch == 0)
                     firstMatch = pos;
 
@@ -77,7 +77,7 @@ public:
             int offset = _linux;
         #endif
 
-        return reinterpret_cast<T>(FindPattern(this->module.GetAddress(), this->module.GetSize()) + offset);
+        return reinterpret_cast<T>(FindPattern() + offset);
     }
 
 };

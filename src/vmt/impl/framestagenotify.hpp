@@ -2,8 +2,8 @@
 #define ANIUM_FRAMESTAGENOTIFY_HPP
 
 #include "../../sdk/definitions/ClientFrameStage.hpp"
-#include "../../events/impl/framestagenotifyevent.hpp"
-#include "../../events/eventbus.hpp"
+//#include "../../events/impl/framestagenotifyevent.hpp"
+//#include "../../events/eventbus.hpp"
 #include "../../utils/logging.hpp"
 #include "../../anium.hpp"
 #include "../vmt.hpp"

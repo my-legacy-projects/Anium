@@ -26,24 +26,18 @@ void Hooks::Paint(void*, PaintMode mode) {
             logger.log("Font init complete");
         }
 
-        wchar_t buffer[120];
-        mbstowcs(buffer, "Anium", sizeof(buffer));
+        wchar_t buffer[] = L"Anium";
 
         surface->SetTextFont(font);
-
-        // Shadow
-        surface->SetTextPosition(5, 2);
-        surface->SetTextColor(BLACK);
-        surface->DrawText(buffer, (int) strlen("Anium"));
 
         // Watermark
         surface->SetTextPosition(4, 1);
         surface->SetTextColor(ORANGE);
-        surface->DrawText(buffer, (int) strlen("Anium"));
+        surface->DrawText(buffer, std::size(buffer), SurfaceFontFlags::ANTIALIAS | SurfaceFontFlags::DROPSHADOW);
 
         //*/
 
-        PaintEvent event = eventBus.publish<PaintEvent>(mode);
+        //PaintEvent event = eventBus.publish<PaintEvent>(mode);
 
         #if !defined(__APPLE__)
             FinishDrawing(surface); // TODO Apple: Find sig for FinishDrawing

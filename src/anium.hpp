@@ -4,7 +4,6 @@
 #include <clocale>
 #include <cstdlib>
 #include <thread>
-#include "events/eventbus.hpp"
 #include "hooks/hooker.hpp"
 #include "netvars/netvar.hpp"
 #include "utils/logging.hpp"

@@ -2,8 +2,9 @@
 #define ANIUM_PAINT_HPP
 
 #include "../../sdk/definitions/PaintMode.hpp"
-#include "../../events/impl/paintevent.hpp"
-#include "../../events/eventbus.hpp"
+#include "../../sdk/definitions/SurfaceFontFlags.hpp"
+//#include "../../events/impl/paintevent.hpp"
+//#include "../../events/eventbus.hpp"
 #include "../../utils/logging.hpp"
 #include "../../anium.hpp"
 #include "../vmt.hpp"
