@@ -13,8 +13,8 @@ enum SurfaceFontFlags {
     DROPSHADOW	= 0x080,
     ADDITIVE = 0x100,
     OUTLINE = 0x200,
-    CUSTOM	= 0x400,		// custom generated font - never fall back to asian compatibility mode
-    BITMAP	= 0x800,		// compiled bitmap font - no fallbacks
+    CUSTOM	= 0x400,		            // custom generated font - never fall back to asian compatibility mode
+    NO_FALLBACK_BITMAP	= 0x800,		// compiled bitmap font - no fallbacks
 
 };
 
