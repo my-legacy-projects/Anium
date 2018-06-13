@@ -9,7 +9,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-#include "../interfaces/interfaces.hpp"
+#include "../interfaces/iface.hpp"
 #include "iohelper.hpp"
 
 class Logger {
@@ -48,13 +48,13 @@ public:
 
         stream << " - " << this->name << " - " << buffer << std::endl;
 
-        if (cvar != nullptr) {
+        if (IFace::cvar != nullptr) {
             std::stringstream engineConsole("");
             engineConsole << " - " << std::put_time(std::localtime(&this->time), "%d.%m.%Y %X")
                           << " - " << buffer << std::endl;
 
-            cvar->ConsoleColorPrintf(Color(255, 169, 10), "Anium");
-            cvar->ConsoleColorPrintf(Color(255, 255, 255), engineConsole.str().c_str());
+            IFace::cvar->ConsoleColorPrintf(Color(255, 169, 10), "Anium");
+            IFace::cvar->ConsoleColorPrintf(Color(255, 255, 255), engineConsole.str().c_str());
         }
 
         std::cout << stream.str();

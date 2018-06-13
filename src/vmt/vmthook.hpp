@@ -36,6 +36,7 @@ public:
     }
 
     ~VMTHook() {
+        this->ReleaseAll();
         *this->instance = this->original;
         this->hookedFuncs.clear();
     }

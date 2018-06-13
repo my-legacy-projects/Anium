@@ -10,6 +10,6 @@ void Hooks::FrameStageNotify(void*, ClientFrameStage_t stage) {
 
     if (!event.IsCancelled()) {*/
         using oFrameStageNotify = void (__thiscall*)(void*, ClientFrameStage_t);
-        clientVMT->GetOriginal<oFrameStageNotify>(36, 36, 36)(client, stage);
+        clientVMT->GetOriginal<oFrameStageNotify>(36, 36, 36)(IFace::client, stage);
     //}
 }

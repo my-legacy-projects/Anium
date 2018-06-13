@@ -15,9 +15,13 @@
     #include <Windows.h>
 
     // CreateFont and DrawText are defined by WinAPI
-    // Our ISurface uses these methods, so let's undefine them so we can use them with ISurface
+    // Our ISurface uses these methods, so let's undefine them so we can use them
     #undef CreateFont
     #undef DrawText
+
+    // interface is defined to a struct by WinAPI
+    // Our Valve interfaces wrapper uses that name though, so let's undefine them so we can use them
+    #undef interface
 #elif defined(__linux__) || defined(__APPLE__)
     // Define Windows-only calling convention to default to nothing on *nix
     #define __fastcall

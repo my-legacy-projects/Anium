@@ -6,7 +6,9 @@
 #include <cstring>
 #include <iostream>
 #include <string>
+#include <sstream>
 #include <thread>
+#include <iomanip>
 #include "../sdk/definitions/InterfaceReg.hpp"
 
 #if defined(_WIN32)
@@ -117,13 +119,18 @@ public:
     }
 
     template <typename T>
-    T* GrabInterface(std::string target) {
+    T* GrabInterface(std::string target, int version) {
+        std::stringstream builder(target);
+        builder << std::setw(3) << std::setfill('0') << version;
+        std::string interface = builder.str();
+        std::cout << "Interface: " << interface << "\n";
+
         #if defined(_WIN32)
             if (GetProcAddress(GetModuleHandleA(this->module.c_str()), "CreateInterface") == 0) {
                 // The module isn't available yet, wait 2 seconds and then try again
                 std::this_thread::sleep_for(std::chrono::seconds(2));
 
-                return this->GrabInterface<T>(target);
+                return this->GrabInterface<T>(target, version);
             }
 
             using CreateInterfaceFn = void* (*)(const char*, int*);
@@ -131,24 +138,19 @@ public:
                 GetModuleHandleA(this->module.c_str()), "CreateInterface"
             );
 
-            T* targetInterface = reinterpret_cast<T*>(func(target.c_str(), nullptr));
-
-            return targetInterface;
+            return reinterpret_cast<T*>(func(interface.c_str(), nullptr));
         #elif defined(__APPLE__) || defined(__linux__)
             if (this->reg == nullptr) {
                 // The reg is null, try to get it or wait 2 seconds and then try again
                 if (!Init())
                     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-                return this->GrabInterface<T>(target);
+                return this->GrabInterface<T>(target, version);
             }
 
             for (InterfaceReg* current = this->reg; current != nullptr; current = current->next) {
-                if (target.find(current->name) != std::string::npos) {
-                    T* interface = reinterpret_cast<T*>(current->create());
-
-                    return interface;
-                }
+                if (interface.find(current->name) != std::string::npos)
+                    return reinterpret_cast<T*>(current->create());
             }
         #endif
 

@@ -4,7 +4,7 @@
 #include <string>
 #include <utility>
 #include <vector>
-#include "../interfaces/interfaces.hpp"
+#include "../interfaces/iface.hpp"
 #include "../sdk/miscellaneous/Recv.hpp"
 #include "../sdk/interfaces/IBaseClientDLL.hpp"
 #include "../utils/logging.hpp"
@@ -37,7 +37,7 @@ private:
 
 public:
     void Init() {
-        for (ClientClass* clazz = client->GetAllClasses(); clazz != nullptr; clazz = clazz->next) {
+        for (ClientClass* clazz = IFace::client->GetAllClasses(); clazz != nullptr; clazz = clazz->next) {
             TreeNode* node = new TreeNode();
             node->prop = nullptr;
 

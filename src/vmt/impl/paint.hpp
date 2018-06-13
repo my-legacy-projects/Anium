@@ -1,6 +1,7 @@
 #ifndef ANIUM_PAINT_HPP
 #define ANIUM_PAINT_HPP
 
+#include "../../interfaces/iface.hpp"
 #include "../../sdk/definitions/PaintMode.hpp"
 #include "../../sdk/definitions/SurfaceFontFlags.hpp"
 //#include "../../events/impl/paintevent.hpp"

@@ -4,6 +4,7 @@
 #include "../../sdk/definitions/ClientFrameStage.hpp"
 //#include "../../events/impl/framestagenotifyevent.hpp"
 //#include "../../events/eventbus.hpp"
+#include "../../interfaces/iface.hpp"
 #include "../../utils/logging.hpp"
 #include "../../anium.hpp"
 #include "../vmt.hpp"

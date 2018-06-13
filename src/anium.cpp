@@ -26,7 +26,7 @@ int Anium::Init(void* self) {
 
         std::setlocale(LC_ALL, "en_US.UTF-8");
 
-        Interfaces::Find(); // This method will block until it finds all the interfaces
+        Interfaces::Init(); // This method will block until it finds all the interfaces
 
         VMT::Init();
 
