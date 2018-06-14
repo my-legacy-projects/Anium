@@ -14,6 +14,10 @@
 #if defined(_WIN32)
     #include <Windows.h>
     #include <Psapi.h>
+
+    // interface is defined to a struct by WinAPI
+    // Our Valve interfaces wrapper uses that name though, so let's undefine them so we can use them
+    #undef interface
 #elif defined(__APPLE__)
     #include <mach-o/dyld.h>
     #include <mach-o/getsect.h>
