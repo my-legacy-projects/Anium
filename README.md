@@ -4,7 +4,7 @@ Cross-platform (as in I want to die) training software for Counter-Strike: Globa
 
 | | **Windows** | **macOS** | **Ubuntu**
 | --- | --- | --- | ---
-Anium | [![VSTS](https://img.shields.io/vso/build/anium/d5ed15f5-b95d-4b52-bf62-fd3265ddf7d4/1.svg)](https://anium.visualstudio.com/Anium/_build) | [![Travis](https://travis-ci.com/Marc3842h/Anium.svg?token=N3JdkxuzfFsy9B38kufx&branch=master)](https://travis-ci.com/Marc3842h/Anium) | [![Circle](https://img.shields.io/circleci/token/7d783390d7d066504d7ed0be0432dbed58e34324/project/github/Marc3842h/Anium/master.svg)](https://circleci.com/gh/Marc3842h/Anium)
+Anium | [![VSTS](https://img.shields.io/vso/build/marc3842h/d5ed15f5-b95d-4b52-bf62-fd3265ddf7d4/1.svg)](https://marc3842h.visualstudio.com/Anium/_build) | [![Travis](https://travis-ci.com/Marc3842h/Anium.svg?token=N3JdkxuzfFsy9B38kufx&branch=master)](https://travis-ci.com/Marc3842h/Anium) | [![Circle](https://img.shields.io/circleci/token/7d783390d7d066504d7ed0be0432dbed58e34324/project/github/Marc3842h/Anium/master.svg)](https://circleci.com/gh/Marc3842h/Anium)
 
 ### Setup
 
