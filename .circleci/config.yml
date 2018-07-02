@@ -9,7 +9,7 @@ jobs:
           name: Install dependencies
           command: |
             apt-get update -qq
-            apt-get install -y g++ clang-5.0 cmake git wget ssh binutils-dev
+            apt-get install -y g++ clang cmake git wget ssh binutils-dev
       - checkout
       - run:
           name: Build using GCC

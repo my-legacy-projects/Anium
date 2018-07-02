@@ -132,7 +132,7 @@ bool io::FindLibrary(std::string path, std::string file, char* out) {
                     // I haven't found out a smart way to check if the dylib is 64-bit
                     // yet so we'll push this back for later. TODO
 
-                    std::sprintf(out, entity->d_name);
+                    std::sprintf(out, "%s", entity->d_name);
                     break;
                 }
             }
