@@ -10,10 +10,16 @@
 #include <thread>
 #include <iomanip>
 #include "../sdk/definitions/InterfaceReg.hpp"
+#include "../utils/iohelper.hpp"
+#include "../utils/stringutils.hpp"
 
 #if defined(_WIN32)
+    #define WIN32_LEAN_AND_MEAN
     #include <Windows.h>
     #include <Psapi.h>
+
+    // I don't know why Windows would switch it around
+    #define PATH_MAX MAX_PATH
 
     // interface is defined to a struct by WinAPI
     // Our Valve interfaces wrapper uses that name though, so let's undefine them so we can use them
@@ -27,6 +33,7 @@
     #include <sys/stat.h>
     #include <sys/types.h>
 #elif defined(__linux__)
+    #include <limits.h>
     #include <link.h>
 #endif
 
@@ -47,19 +54,35 @@ public:
     SourceLib(std::string _windows, std::string _mac, std::string _linux) {
         #if defined(_WIN32)
             this->name = std::move(_windows);
+            std::string extension = ".dll";
         #elif defined(__APPLE__)
             this->name = std::move(_mac);
+            std::string extension = ".dylib";
         #elif defined(__linux__)
             this->name = std::move(_linux);
+            std::string extension = ".so";
         #endif
 
         if (this->name.empty())
             return;
 
+        if (!StringHelper::EndsWith(this->name, extension)) {
+            // Not a full path was provided but just a library name, let's resolve it
+            // I hate you Josh for forcing me to do this
+            char buffer[PATH_MAX];
+
+            if (!io::FindLibrary(".", this->name, buffer) &&
+                !io::FindLibrary("./bin/", this->name, buffer) &&
+                !io::FindLibrary("./csgo/bin/", this->name, buffer))
+                return;
+
+            this->name = std::string(buffer);
+        }
+
         // Parse the full path of the library into the last one, e.g "client.dll", "client.dylib", "client_client.so"
         this->module = this->name.substr(this->name.find_last_of('/') + 1);
 
-        Init(); // Try to load the reg now - deal with it later if it doesn't work yet
+        Init(); // Try to load metadata for this source library
     }
 
     bool Init() {

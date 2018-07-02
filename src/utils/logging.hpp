@@ -35,12 +35,12 @@ public:
     }
 
     void log(std::string message, ...) {
-        std::stringstream stream("");
+        std::stringstream stream;
 
         if (this->withTime)
             stream << std::put_time(std::localtime(&this->time), "%d.%m.%Y %X");
 
-        char buffer[512]; // If you print over 512 chars go to hell
+        char buffer[message.length() + 512]; // Message length + 512 chars buffer for the varargs
         va_list varargs;
         va_start(varargs, message);
         vsnprintf(buffer, sizeof(buffer), message.c_str(), varargs);
@@ -49,7 +49,7 @@ public:
         stream << " - " << this->name << " - " << buffer << std::endl;
 
         if (IFace::cvar != nullptr) {
-            std::stringstream engineConsole("");
+            std::stringstream engineConsole;
             engineConsole << " - " << std::put_time(std::localtime(&this->time), "%d.%m.%Y %X")
                           << " - " << buffer << std::endl;
 

@@ -7,12 +7,25 @@
 #include <string>
 
 #if defined(__APPLE__) || defined(__linux__)
+    #include <dlfcn.h>
     #include <pwd.h>
     #include <sys/stat.h>
     #include <unistd.h>
 #endif
 
+#if defined(__linux__)
+    #include <link.h>
+
+    // "bfd" is a internal library and shouldn't be used by other projects
+    // Well the maintainers can suck my ass because I'll use it anyways
+    // It'll error without defines below so let's define them
+    #define PACKAGE
+    #define PACKAGE_VERSION
+    #include <bfd.h>
+#endif
+
 #if defined(__APPLE__)
+    #include <dirent.h>
     #include <mach/error.h>
     #include <sys/errno.h>
     #include <sys/syslimits.h>
@@ -44,6 +57,8 @@
 
 namespace io {
 
+    // File IO
+
     bool Create(std::string path);
 
     bool Delete(std::string path);
@@ -63,6 +78,12 @@ namespace io {
 
     // Converts "/" to cross-platform file separators
     void Convert(std::string& path);
+
+    // Libraries IO
+
+    bool FindLibrary(std::string path, std::string file, char* out);
+
+    bool FindLibrary(uintptr_t address, char* out);
 
 }
 
