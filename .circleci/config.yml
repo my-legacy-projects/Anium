@@ -9,19 +9,26 @@ jobs:
           name: Install dependencies
           command: |
             apt-get update -qq
-            apt-get install -y g++ clang-5.0 cmake git wget ssh patchelf
+            apt-get install -y g++ clang-5.0 cmake git wget ssh binutils-dev
       - checkout
       - run:
-          name: Generate CMake files
+          name: Build using GCC
           command: |
-            cmake .
-      - run:
-          name: Build
-          command: |
+            CC=gcc CXX=g++ cmake .
             make -j2
       - store_artifacts:
           path: ~/anium/bin/libAnium.so
-          destination: libAnium.so
+          destination: gcc/libAnium.so
+      - run:
+          name: Build using Clang
+          command: |
+            rm -rf CMakeCache.txt
+            rm -rf bin/
+            CC=clang CXX=clang++ cmake .
+            make -j2
+      - store_artifacts:
+          path: ~/anium/bin/libAnium.so
+          destination: clang/libAnium.so
 
 notify:
   webhooks:

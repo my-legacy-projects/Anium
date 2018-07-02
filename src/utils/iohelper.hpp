@@ -6,6 +6,11 @@
 #include <cstring>
 #include <string>
 
+#if defined(_WIN32)
+    #define WIN32_LEAN_AND_MEAN
+    #include <Windows.h>
+#endif
+
 #if defined(__APPLE__) || defined(__linux__)
     #include <dlfcn.h>
     #include <pwd.h>

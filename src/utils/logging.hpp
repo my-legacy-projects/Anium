@@ -40,7 +40,7 @@ public:
         if (this->withTime)
             stream << std::put_time(std::localtime(&this->time), "%d.%m.%Y %X");
 
-        char buffer[message.length() + 512]; // Message length + 512 chars buffer for the varargs
+        char buffer[512]; // This buffer may be too small
         va_list varargs;
         va_start(varargs, message);
         vsnprintf(buffer, sizeof(buffer), message.c_str(), varargs);

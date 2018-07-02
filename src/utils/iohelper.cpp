@@ -122,23 +122,23 @@ bool io::FindLibrary(std::string path, std::string file, char* out) {
     std::memset(out, 0, strlen(out));
 
     #if defined(__APPLE__)
-        DIR* dir = opendir(path);
-            struct dirent* entity;
+        DIR* dir = opendir(path.c_str());
+        struct dirent* entity;
 
-            if (dir != nullptr) {
-                while ((entity = readdir(dir)) != nullptr) {
-                    if (strcmp(entity->d_name, file.c_str()) == 0) {
-                        // macOS has the same problem as Linux (see description below)
-                        // I haven't found out a smart way to check if the dylib is 64-bit
-                        // yet so we'll push this back for later. TODO
+        if (dir != nullptr) {
+            while ((entity = readdir(dir)) != nullptr) {
+                if (std::strcmp(entity->d_name, file.c_str()) == 0) {
+                    // macOS has the same problem as Linux (see description below)
+                    // I haven't found out a smart way to check if the dylib is 64-bit
+                    // yet so we'll push this back for later. TODO
 
-                        sprintf(out, foundPath.c_str());
-                        break;
-                    }
+                    std::sprintf(out, entity->d_name);
+                    break;
                 }
-
-                closedir(dir);
             }
+
+            closedir(dir);
+        }
     #else
         for (const fs::directory_entry& iterator : fs::directory_iterator(fs::u8path(path))) {
             if (iterator.path().u8string().find(file) != std::string::npos) {
@@ -172,21 +172,21 @@ bool io::FindLibrary(std::string path, std::string file, char* out) {
 bool io::FindLibrary(uintptr_t address, char* out) {
     std::memset(out, 0, strlen(out));
 
-#if defined(_WIN32)
-    HMODULE module;
-        if (GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
-                              (LPCTSTR) address, &module)) {
+    #if defined(_WIN32)
+        HMODULE module;
+
+        if (GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT, (LPCTSTR) address, &module)) {
             if (GetModuleFileName(module, out, strlen(out)) != 0)
                 return true;
         }
-#elif defined(__APPLE__) || defined(__linux__)
-    Dl_info dlInfo;
+    #elif defined(__APPLE__) || defined(__linux__)
+        Dl_info dlInfo;
 
-    if (dladdr(reinterpret_cast<void*>(address), &dlInfo) == 0) {
-        std::snprintf(out, strlen(out), "%s", dlInfo.dli_fname);
-        return true;
-    }
-#endif
+        if (dladdr(reinterpret_cast<void*>(address), &dlInfo) == 0) {
+            std::snprintf(out, strlen(out), "%s", dlInfo.dli_fname);
+            return true;
+        }
+    #endif
 
     return false;
 }
