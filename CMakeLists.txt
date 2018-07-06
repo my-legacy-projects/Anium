@@ -24,6 +24,7 @@ endif()
 
 if (NOT CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Wno-unused-parameter")
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} --no-undefined")
 
     # Define MSVC debug macro for non MSVC and hide symbols by default on release builds
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG")
@@ -43,7 +44,7 @@ if (WIN32)
 elseif (APPLE)
     set(CMAKE_DL_LIBS dl pthread c stdc++)
 elseif (UNIX) # Linux
-    set(CMAKE_DL_LIBS dl pthread c stdc++ stdc++fs)
+    set(CMAKE_DL_LIBS dl pthread bfd c stdc++ stdc++fs)
 endif()
 
 add_library(Anium SHARED ${SRC})

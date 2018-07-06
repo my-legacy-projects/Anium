@@ -20,11 +20,16 @@ int Anium::Init(void* self) {
             if (dladdr((void*) Anium::Init, &dlInfo) != 0) {
                 logger.log("Found ourselves in %s, assigning module handle.", dlInfo.dli_fname);
             } else {
-                logger.log("Unable to found ourselves. No module handle assigned.");
+                logger.log("Unable to found ourselves: %s", dlerror());
             }
         #endif
 
-        std::setlocale(LC_ALL, "en_US.UTF-8");
+        char* locale = std::setlocale(LC_ALL, "en_US.UTF-8");
+
+        // If the call to above failed, the language is on generic "C" which _should_ be fine for most cases
+        if (locale != nullptr) {
+            logger.log("Locale has been set to %s.", locale);
+        }
 
         Interfaces::Init(); // This method will block until it finds all the interfaces
 
