@@ -16,14 +16,14 @@ set(CMAKE_CXX_FLAGS "-O3 -Wall -fPIC -std=c++17")
 if (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
     # Prevents generation of STB_GNU_UNIQUE symbols which prevent unloading using dlclose
     # https://stackoverflow.com/a/39123106/7360990
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --no-gnu-unique")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --no-gnu-unique -Wl,--no-undefined")
 
     # Strip symbols from release builds
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -s")
 endif()
 
 if (NOT CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Wno-unused-parameter -Wl,--no-undefined")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Wno-unused-parameter")
 
     # Define MSVC debug macro for non MSVC and hide symbols by default on release builds
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG")
@@ -33,9 +33,6 @@ endif()
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     # Source SDK headers contain tons of unused private fields, disable warning for those
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-private-field")
-
-    # Clang also reports that the linker input (--no-undefined) is unused, so disable warnings for those
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-command-line-argument")
 endif()
 
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${CMAKE_CXX_FLAGS} -g3 -ggdb")
